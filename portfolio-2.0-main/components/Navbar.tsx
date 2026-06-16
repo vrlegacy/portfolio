@@ -10,6 +10,7 @@ const COLORS = [
     'bg-blue-500 text-white',
     'bg-teal-500 text-black',
     'bg-indigo-500 text-white',
+    'bg-rose-500 text-white',
 ];
 
 const MENU_LINKS = [
@@ -129,7 +130,7 @@ const Navbar = () => {
                                             <span
                                                 className={cn(
                                                     'size-3.5 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-[200%] transition-all',
-                                                    COLORS[idx],
+                                                    COLORS[idx % COLORS.length],
                                                 )}
                                             >
                                                 <MoveUpRight
@@ -147,6 +148,17 @@ const Navbar = () => {
                 </div>
 
                 <div className="w-full max-w-[300px] mx-8 sm:mx-auto">
+                    <div className="mb-6">
+                        <button
+                            onClick={() => {
+                                router.push('/chess');
+                                setIsMenuOpen(false);
+                            }}
+                            className="text-white hover:text-primary hover:underline text-lg font-semibold tracking-wider font-sans cursor-pointer transition-colors duration-200"
+                        >
+                            Play Chess
+                        </button>
+                    </div>
                     <p className="text-muted-foreground mb-4">GET IN TOUCH</p>
                     <a href={`mailto:${GENERAL_INFO.email}`}>
                         {GENERAL_INFO.email}

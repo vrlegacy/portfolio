@@ -1,3 +1,4 @@
 allowBuilds:
   sharp: true
+  stockfish: set this to true or false
   unrs-resolver: true

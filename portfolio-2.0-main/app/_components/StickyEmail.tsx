@@ -1,4 +1,5 @@
 import { GENERAL_INFO } from '@/lib/data';
+import Link from 'next/link';
 import React from 'react';
 
 const StickyEmail = () => {
@@ -8,19 +9,23 @@ const StickyEmail = () => {
                 href={`mailto:${GENERAL_INFO.email}`}
                 className="px-3 text-muted-foreground tracking-[1px] transition-all !bg-bottom hover:text-foreground hover:!bg-center"
                 style={{
-                    // background:
-                    //     'linear-gradient(to bottom, hsl(var(--muted-foreground)) 0% 33.33%, hsl(var(--primary)) 33.33% 66.66%, hsl(var(--muted-foreground)) 66.66% 100%)',
-                    // backgroundSize: '100% 300%',
-
-                    // backgroundClip: 'text',
-                    // color: 'transparent',
-
                     textOrientation: 'mixed',
                     writingMode: 'vertical-rl',
                 }}
             >
                 {GENERAL_INFO.email}
             </a>
+            {/* Play Chess link placed just below the email */}
+            <Link
+                href="/chess"
+                className="px-3 block mt-6 text-white hover:text-primary transition-all no-underline hover:underline tracking-[1.5px] font-sans font-semibold uppercase text-xs"
+                style={{
+                    textOrientation: 'mixed',
+                    writingMode: 'vertical-rl',
+                }}
+            >
+                Play Chess
+            </Link>
         </div>
     );
 };
