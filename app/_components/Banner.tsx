@@ -113,7 +113,7 @@ const Banner = () => {
                     <div className="flex items-center gap-2 mt-3">
                         <span className="size-3 rounded-full bg-white"></span>
                         <span className="text-sm text-muted-foreground">
-                            Available for new opportunities
+                            Open to Collabarate
                         </span>
                     </div>
                 </div>

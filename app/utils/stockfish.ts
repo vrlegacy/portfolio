@@ -195,8 +195,8 @@ function getLocalBestMove(fen: string): string | null {
 
   for (const move of shuffledMoves) {
     chess.move(move.san);
-    // Depth 3 search for smart plays
-    const boardValue = minimax(chess, 2, -Infinity, Infinity, false, activeColor);
+    // Depth 2 search for smart plays (reduced to prevent main thread freeze)
+    const boardValue = minimax(chess, 1, -Infinity, Infinity, false, activeColor);
     chess.undo();
 
     if (boardValue > bestValue) {
