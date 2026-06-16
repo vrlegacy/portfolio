@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import TransitionLink from "@/components/TransitionLink";
 import { ArrowLeft, Trophy } from "lucide-react";
@@ -8,6 +8,12 @@ import { ArrowLeft, Trophy } from "lucide-react";
 const ChessBoard = dynamic(() => import("../components/ChessBoard"), { ssr: false });
 
 export default function ChessPage() {
+  const [showWIP, setShowWIP] = useState(true);
+
+  // Removed timeout to keep "Work in Progress" permanently for now
+  useEffect(() => {
+    // Intentionally empty or remove the whole useEffect if not needed
+  }, []);
   return (
     <div className="min-h-screen bg-[#121212] text-[#e0e0e0] flex flex-col justify-start items-center py-8 px-4 font-sans selection:bg-primary/30 selection:text-white">
       {/* Immersive Dark Header */}
@@ -25,6 +31,12 @@ export default function ChessPage() {
           </span>
         </div>
       </div>
+
+      {showWIP && (
+        <div className="bg-primary/20 text-primary border border-primary/30 px-6 py-2 rounded-full font-bold tracking-widest uppercase text-sm mb-6 animate-pulse transition-opacity duration-500">
+          Work in Progress
+        </div>
+      )}
 
       {/* Main Board & Sidechat Widget */}
       <main className="w-full flex-1 flex flex-col justify-center items-center">

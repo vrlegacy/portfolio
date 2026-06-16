@@ -77,7 +77,10 @@ const Button = ({
     if (as === 'link') {
         const props = rest as ComponentProps<typeof Link>;
 
-        if (props.target === '_blank') {
+        if (
+            props.target === '_blank' ||
+            (props.href && props.href.toString().startsWith('mailto:'))
+        ) {
             return (
                 <a
                     className={buttonClasses}

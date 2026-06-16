@@ -104,7 +104,10 @@ export default function ChessBoard() {
 
   // Scroll to bottom of chat
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatEndRef.current && chatEndRef.current.parentElement) {
+      const container = chatEndRef.current.parentElement;
+      container.scrollTop = container.scrollHeight;
+    }
   }, [chatMessages]);
 
   // Sync board FEN and move history

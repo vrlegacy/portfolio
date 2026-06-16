@@ -58,11 +58,11 @@ const Experiences = () => {
 
                 <div className="grid gap-14">
                     {MY_EXPERIENCE.map((item) => (
-                        <div key={item.title} className="experience-item">
-                            <p className="text-xl text-muted-foreground">
+                        <div key={item.title} className="experience-item group">
+                            <p className="text-xl text-muted-foreground transition-colors duration-500">
                                 {item.company}
                             </p>
-                            <p className="text-5xl font-anton leading-none mt-3.5 mb-2.5">
+                            <p className="text-5xl font-anton leading-none mt-3.5 mb-2.5 transition-all duration-700 bg-gradient-to-r from-primary to-foreground from-[50%] to-[50%] bg-[length:200%] bg-right bg-clip-text text-transparent group-hover:bg-left w-fit">
                                 {item.title}
                             </p>
                             <p className="text-lg text-muted-foreground">
