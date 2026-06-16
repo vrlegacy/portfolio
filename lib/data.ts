@@ -90,24 +90,24 @@ export const PROJECTS: IProject[] = [
         slug: 'civix',
         year: 2025,
         description: `
-      Civix is a citizen engagement platform that enables users to create polls, petitions, and complaints. It bridges the gap between citizens and local authorities by providing a structured, interactive, and transparent way to raise issues and gauge public opinion. <br/> <br/>
+      Civix is a modern digital civic engagement platform built as a collaborative team project under the Infosys Springboard internship program. I led a team of 6 developers, directing the system architecture and leading the backend implementation. The application enables citizens to create petitions, organize public polls, and raise local complaints, fostering transparency and active communication between communities and authorities. <br/> <br/>
       
       Key Features:<br/>
       <ul>
-        <li>🗳️ Engagement Tools: Petitions, polls, and complaint registration system</li>
-        <li>📂 Media Uploads: Image uploads for complaints via Cloudinary integration</li>
-        <li>🗺️ Location-based: Interactive mapping features through OpenStreetMap</li>
-        <li>⚡ Fully Responsive: Built with modern components and React layout design</li>
+        <li>🗳️ Engagement Tools: Modular systems for launching petitions, casting votes in polls, and registering complaints.</li>
+        <li>📂 Rich Media: Secure image uploads for visual complaint proof integrated using Cloudinary.</li>
+        <li>🗺️ Live Mapping: Geographic coordinates visualization and location tagging via OpenStreetMap.</li>
+        <li>⚡ Modern Layout: Fully responsive, component-driven user interface built with React.</li>
       </ul>
       `,
         role: `
-      Full Stack Developer <br/>
-      Developed the end-to-end user flows and integrations:
+      Team Lead & Backend Developer <br/>
+      Coordinated a team of 6 members under Infosys Springboard while architecting the application backend:
       <ul>
-        <li>✅ Cloud Database: Integrated MongoDB Atlas for secure, cloud-based data storage and management</li>
-        <li>🎨 Interactive Map: Added location-based features using OpenStreetMap</li>
-        <li>📂 Asset Upload: Configured secure media upload pipelines with Cloudinary</li>
-        <li>💻 Frontend: Developed responsive, component-based user interfaces with React</li>
+        <li>✅ Backend Engineering: Designed robust API endpoints and database models using Node.js, Express, and MongoDB.</li>
+        <li>✅ Leadership: Guided Git branching strategies, distributed code responsibilities, and held sprint check-ins for 6 developers.</li>
+        <li>✅ Service Integrations: Programmed Cloudinary media pipelines and OpenStreetMap logic.</li>
+        <li>✅ Database Setup: Deployed and configured cloud collections on MongoDB Atlas.</li>
       </ul>
       `,
         techStack: [
@@ -121,33 +121,31 @@ export const PROJECTS: IProject[] = [
         thumbnail: '/projects/thumbnail/devLinks.jpg',
         longThumbnail: '/projects/long/devLinks.jpg',
         images: [
-            '/projects/images/devLinks-1.png',
-            '/projects/images/devLinks-2.png',
-            '/projects/images/devLinks-3.png',
+            //project images to be added here 
         ],
-        sourceCode: 'https://github.com/Vishwas-Rudramurthy/Civix',
+        sourceCode: 'https://github.com/vrlegacy/Civix-Digital-Civic-Engagement-Petition-Platform',
     },
     {
         title: 'Diabetic Retinopathy Detection System',
         slug: 'diabetic-retinopathy-detection',
         year: 2025,
         description: `
-      An AI-powered medical imaging solution designed for automated detection and classification of Diabetic Retinopathy severity from retinal fundus images. It helps improve screening workflows and clinical diagnostic efficiency. <br/> <br/>
+      An advanced AI-powered medical diagnostic application engineered to automate the detection and grading of diabetic retinopathy from retinal fundus images. By automating severity classification, the system streamlines screening workflows to support ophthalmologists in clinical decision-making. <br/> <br/>
       
       Key Features:<br/>
       <ul>
-        <li>👁️ Severe Detection: Predefined CNN model trained for classifying DR severity levels</li>
-        <li>🧪 Image Preprocessing: Specialized pipelines including CLAHE, normalization, resizing, and noise reduction</li>
-        <li>🖥️ Diagnostic Dashboard: Simple, clean web interface for uploading images and viewing model outputs</li>
+        <li>👁️ Severity Grading: Convolutional Neural Network (CNN) model trained to categorize DR stages.</li>
+        <li>🧪 Advanced Preprocessing: Customized image pipelines leveraging CLAHE, resizing, and normalization to enhance feature resolution.</li>
+        <li>🖥️ Diagnostic Dashboard: A clean, intuitive web portal for uploading retinal images and displaying immediate model predictions.</li>
       </ul>
       `,
         role: `
       AI & Full Stack Developer <br/>
-      Engineered the model preprocessing pipeline and web application:
+      Engineered the neural network pipelines, image preprocessing algorithms, and web interface:
       <ul>
-        <li>🧠 Model Training: Implemented Convolutional Neural Networks (CNN) using Deep Learning frameworks</li>
-        <li>⚙️ Preprocessing: Built advanced image preprocessing workflows (CLAHE and normalization) to maximize feature resolution</li>
-        <li>🌐 Web Application: Developed the web portal backend using Python and Flask to serve model inferences</li>
+        <li>🧠 Model Training: Designed and trained CNN models for high-accuracy retinal classification.</li>
+        <li>⚙️ Preprocessing: Built customized CLAHE and noise-filtering algorithms to optimize retinal vessel contrast.</li>
+        <li>🌐 Web Application: Developed the full web service backend using Python and Flask to deliver model inferences.</li>
       </ul>
       `,
         techStack: [
@@ -163,11 +161,9 @@ export const PROJECTS: IProject[] = [
         thumbnail: '/projects/thumbnail/resume-roaster.jpg',
         longThumbnail: '/projects/long/resume-roaster.jpg',
         images: [
-            '/projects/images/resume-roaster-1.png',
-            '/projects/images/resume-roaster-2.png',
-            '/projects/images/resume-roaster-3.png',
+           //  project images added to be here
         ],
-        sourceCode: 'https://github.com/Vishwas-Rudramurthy/Diabetic-Retinopathy-Detection',
+        sourceCode: 'https://github.com/vrlegacy/Diabetic-retinopathy-detection-using-machine-learning-concept',
     },
 ];
 
