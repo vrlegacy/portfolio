@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useEffect, useState, useRef } from "react";
 import { Chess } from "chess.js";
 import dynamic from "next/dynamic";
