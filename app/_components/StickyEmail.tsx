@@ -1,20 +1,27 @@
+'use client';
 import { GENERAL_INFO } from '@/lib/data';
+import { useContactModal } from '@/components/ContactModalContext';
 import Link from 'next/link';
 import React from 'react';
 
 const StickyEmail = () => {
+    const { openContactModal } = useContactModal();
+
     return (
         <div className="max-xl:hidden fixed bottom-32 left-0 block">
-            <a
-                href={`mailto:${GENERAL_INFO.email}`}
-                className="px-3 text-muted-foreground tracking-[1px] transition-all !bg-bottom hover:text-foreground hover:!bg-center"
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    openContactModal();
+                }}
+                className="px-3 text-muted-foreground tracking-[1px] transition-all !bg-bottom hover:text-foreground hover:!bg-center cursor-pointer border-none bg-transparent outline-none font-sans"
                 style={{
                     textOrientation: 'mixed',
                     writingMode: 'vertical-rl',
                 }}
             >
                 {GENERAL_INFO.email}
-            </a>
+            </button>
             {/* Play Chess link placed just below the email */}
             <Link
                 href="/chess"

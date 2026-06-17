@@ -6,6 +6,7 @@ export const GENERAL_INFO = {
     emailBody: 'Hi Vishwas, I am reaching out to you because...',
     oldPortfolio: '',
     upworkProfile: '',
+    web3formsAccessKey: '901eaa6f-86af-4742-a295-650d772a4455', // Get a free key at https://web3forms.com/
 };
 
 export const SOCIAL_LINKS = [

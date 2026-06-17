@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils';
 import { IProject } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import Image from 'next/image';
 import { useRef } from 'react';
 
 interface Props {
@@ -103,17 +102,6 @@ const Project = ({ index, project }: Props) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <Image
-                src={project.thumbnail}
-                alt="Project"
-                width="300"
-                height="200"
-                className={cn(
-                    'w-full object-cover mb-6 aspect-[3/2] object-top md:hidden',
-                )}
-                key={project.slug}
-                loading="lazy"
-            />
             <div className="flex gap-2 md:gap-5">
                 <div className="font-anton text-muted-foreground">
                     _{(index + 1).toString().padStart(2, '0')}.

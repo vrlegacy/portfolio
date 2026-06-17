@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Chess } from "chess.js";
 import dynamic from "next/dynamic";
 import { getBestMove } from "../utils/stockfish";
+import { useContactModal } from "@/components/ContactModalContext";
 
 const Chessboard = dynamic(
   () => import("react-chessboard").then((mod) => mod.Chessboard),
@@ -31,6 +32,7 @@ interface ChatMessage {
 }
 
 export default function ChessBoard() {
+  const { openContactModal } = useContactModal();
   const [game, setGame] = useState(() => new Chess());
   const [fen, setFen] = useState<string>("start");
   const [boardTheme, setBoardTheme] = useState<"classic" | "red-yellow">("classic");
@@ -587,12 +589,15 @@ export default function ChessBoard() {
                           <p className="font-semibold mb-1">Play Request</p>
                           <p className="leading-relaxed">
                             Interested in playing? Send a mail to{" "}
-                            <a 
-                              href="mailto:vishwasrudrmaurthy.26@gmail.com" 
-                              className="underline font-bold hover:text-white"
+                            <button 
+                              onClick={(e) => {
+                                e.preventDefault();
+                                openContactModal();
+                              }}
+                              className="underline font-bold hover:text-white cursor-pointer bg-transparent border-none p-0 inline text-xs align-baseline font-sans"
                             >
                               vishwasrudrmaurthy.26@gmail.com
-                            </a>
+                            </button>
                           </p>
                         </div>
                       </div>

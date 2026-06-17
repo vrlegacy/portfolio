@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import React from 'react';
+import { useContactModal } from '@/components/ContactModalContext';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -36,6 +37,7 @@ const LinkedinIcon = ({ size = 32 }: { size?: number }) => (
 );
 
 const Banner = () => {
+    const { openContactModal } = useContactModal();
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     // move the content a little up on scroll
@@ -81,8 +83,8 @@ const Banner = () => {
                     
                     <div className="flex items-center gap-6 mt-9 slide-up-and-fade">
                         <Button
-                            as="link"
-                            href={`mailto:${GENERAL_INFO.email}?subject=${encodeURIComponent(GENERAL_INFO.emailSubject)}&body=${encodeURIComponent(GENERAL_INFO.emailBody)}`}
+                            as="button"
+                            onClick={openContactModal}
                             variant="primary"
                             className="banner-button"
                         >

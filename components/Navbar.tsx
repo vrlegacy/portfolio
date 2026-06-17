@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { MoveUpRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { GENERAL_INFO, SOCIAL_LINKS } from '@/lib/data';
+import { useContactModal } from '@/components/ContactModalContext';
 
 const COLORS = [
     'bg-yellow-500 text-black',
@@ -35,6 +36,7 @@ const MENU_LINKS = [
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const router = useRouter();
+    const { openContactModal } = useContactModal();
 
     return (
         <>
@@ -160,9 +162,16 @@ const Navbar = () => {
                         </button>
                     </div>
                     <p className="text-muted-foreground mb-4">GET IN TOUCH</p>
-                    <a href={`mailto:${GENERAL_INFO.email}`}>
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setIsMenuOpen(false);
+                            openContactModal();
+                        }}
+                        className="text-foreground hover:text-primary transition-colors cursor-pointer text-left block font-sans"
+                    >
                         {GENERAL_INFO.email}
-                    </a>
+                    </button>
                 </div>
             </div>
         </>

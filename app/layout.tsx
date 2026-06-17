@@ -10,6 +10,8 @@ import ParticleBackground from '@/components/ParticleBackground';
 import Navbar from '@/components/Navbar';
 import CustomCursor from '@/components/CustomCursor';
 import Preloader from '../components/Preloader';
+import { ContactModalProvider } from '@/components/ContactModalContext';
+import ContactModal from '@/components/ContactModal';
 
 
 const antonFont = Anton({
@@ -43,24 +45,26 @@ export default function RootLayout({
                 suppressHydrationWarning
             >
                 <SmoothScroll>
-                    {/* <a
-                        href="https://forms.gle/t73XYJgWD5cJNr6e8"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 block bg-black text-center z-[1] text-sm py-2 hover:text-primary transition-all"
-                    >
-                        Frontend dev? I&apos;ll help you polish your resume —
-                        completely free.
-                    </a> */}
-                    <Navbar />
-                    <main>{children}</main>
-                    <Footer />
+                    <ContactModalProvider>
+                        {/* <a
+                            href="https://forms.gle/t73XYJgWD5cJNr6e8"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-4 block bg-black text-center z-[1] text-sm py-2 hover:text-primary transition-all"
+                        >
+                            Frontend dev? I&apos;ll help you polish your resume —
+                            completely free.
+                        </a> */}
+                        <Navbar />
+                        <main>{children}</main>
+                        <Footer />
 
-                    <CustomCursor />
-                    <Preloader />
-                    <ScrollProgressIndicator />
-                    <ParticleBackground />
-
+                        <CustomCursor />
+                        <Preloader />
+                        <ScrollProgressIndicator />
+                        <ParticleBackground />
+                        <ContactModal />
+                    </ContactModalProvider>
                 </SmoothScroll>
             </body>
         </html>
