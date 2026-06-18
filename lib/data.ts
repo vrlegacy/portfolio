@@ -91,40 +91,50 @@ export const PROJECTS: IProject[] = [
         slug: 'civix',
         year: 2025,
         description: `
-      Civix is a modern digital civic engagement platform built as a collaborative team project under the Infosys Springboard internship program. I led a team of 6 developers, directing the system architecture and leading the backend implementation. The application enables citizens to create petitions, organize public polls, and raise local complaints, fostering transparency and active communication between communities and authorities. <br/> <br/>
+      Civix is a full-stack digital civic engagement platform designed to bridge the gap between citizens, volunteers, and local authorities. Developed as a collaborative team project under the Infosys Springboard internship program, the system features a robust, role-based user hierarchy with a responsive React frontend and a secure Express/MongoDB REST API. <br/> <br/>
       
-      Key Features:<br/>
+      <strong>🌟 Core Platform Features:</strong>
       <ul>
-        <li>🗳️ Engagement Tools: Modular systems for launching petitions, casting votes in polls, and registering complaints.</li>
-        <li>📂 Rich Media: Secure image uploads for visual complaint proof integrated using Cloudinary.</li>
-        <li>🗺️ Live Mapping: Geographic coordinates visualization and location tagging via OpenStreetMap.</li>
-        <li>⚡ Modern Layout: Fully responsive, component-driven user interface built with React.</li>
+        <li><strong>Interactive Citizen Dashboard:</strong> A unified home page displaying live engagement stats, active complaints, petition status, and local polls.</li>
+        <li><strong>Role-Based Portals:</strong> Dedicated user dashboards customized for <strong>Citizens</strong>, <strong>Volunteers</strong>, and <strong>Administrators/Officials</strong> with strict JWT-based request authorization.</li>
+        <li><strong>Smart Geolocation & Mapping:</strong> Real-time location detection and interactive OpenStreetMap integration (via Leaflet) to select precise coordinates and addresses for signups and complaint submissions.</li>
+        <li><strong>Complaints Management:</strong> Citizens can report community issues with category tags and photos (featuring client-side image compression before uploading to Cloudinary). Admins can assign complaints to volunteers for on-the-ground review.</li>
+        <li><strong>Petitions Engine:</strong> Initiate and sign petitions with visual progress bars tracking signature goals, single-signature enforcement, official timelines, and status logs.</li>
+        <li><strong>Live Polls & Surveys:</strong> Vote in geographic-targeted polls with real-time charts displaying vote distributions.</li>
+        <li><strong>Visual Reports & Sentiment Analytics:</strong> Beautiful graphs tracking civic activity and NLP-based sentiment analysis of community feedback powered by the <code>natural</code> library.</li>
       </ul>
       `,
         role: `
-      Team Lead & Backend Developer <br/>
-      Coordinated a team of 6 members under Infosys Springboard while architecting the application backend:
+      <strong>Team Lead & Full Stack Developer (Backend focus)</strong> <br/>
+      I led a team of 6 developers under the Infosys Springboard internship program, directing the system architecture and leading the backend implementation:
       <ul>
-        <li>✅ Backend Engineering: Designed robust API endpoints and database models using Node.js, Express, and MongoDB.</li>
-        <li>✅ Leadership: Guided Git branching strategies, distributed code responsibilities, and held sprint check-ins for 6 developers.</li>
-        <li>✅ Service Integrations: Programmed Cloudinary media pipelines and OpenStreetMap logic.</li>
-        <li>✅ Database Setup: Deployed and configured cloud collections on MongoDB Atlas.</li>
+        <li><strong>Backend Architecture:</strong> Designed a robust, secure REST API using Node.js, Express, and MongoDB, complete with JWT auth, token blacklisting, and a pending-user verification queue.</li>
+        <li><strong>Media & Mapping Integrations:</strong> Configured secure media pipelines with Cloudinary, integrated OpenStreetMap geocoding, and built SMTP mail services using Nodemailer.</li>
+        <li><strong>NLP Sentiment & Analytics:</strong> Implemented a sentiment analysis engine using the Node <code>natural</code> library to evaluate positive/negative/neutral feedback from citizen reports.</li>
+        <li><strong>Team Leadership:</strong> Managed Git branching strategies, delegated responsibilities, conducted code reviews, and orchestrated sprint check-ins for the development team.</li>
       </ul>
       `,
         techStack: [
             'React.js',
+            'TypeScript',
+            'Tailwind CSS',
+            'Node.js',
+            'Express.js',
             'MongoDB',
             'Cloudinary',
             'OpenStreetMap',
-            'Node.js',
-            'Express.js'
+            'Recharts',
+            'Natural NLP'
         ],
-        thumbnail: '/projects/thumbnail/devLinks.jpg',
-        longThumbnail: '/projects/long/devLinks.jpg',
+        thumbnail: '/projects/images/civix-home.png',
+        longThumbnail: '/projects/images/civix-home.png',
         images: [
-            //project images to be added here 
+            '/projects/images/civix-home.png',
+            '/projects/images/civix-dashboard.png',
         ],
         sourceCode: 'https://github.com/vrlegacy/Civix-Digital-Civic-Engagement-Petition-Platform',
+        liveUrl: 'https://civix-zeta.vercel.app/',
+        video: 'https://drive.google.com/file/d/1uhYGms1CHXoL4E4Js9MHp-OCbBMd6e3g/preview',
     },
     {
         title: 'Diabetic Retinopathy Detection System',

@@ -147,21 +147,30 @@ const ProjectDetails = ({ project }: Props) => {
 
                         <div className="max-w-[635px] space-y-7 pb-20 mx-auto">
                             <div className="fade-in-later">
-                                <p className="text-muted-foreground font-anton mb-3">
-                                    Year
-                                </p>
-
-                                <div className="text-lg">{project.year}</div>
+                            
                             </div>
                             <div className="fade-in-later">
                                 <p className="text-muted-foreground font-anton mb-3">
-                                    Tech & Technique
+                                    Technologies Used 
                                 </p>
 
                                 <div className="text-lg">
                                     {project.techStack.join(', ')}
                                 </div>
                             </div>
+                            {project.liveUrl && (
+                                <div className="fade-in-later pt-2 pb-4">
+                                    <a
+                                        href={project.liveUrl}
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-anton uppercase tracking-wider border-2 border-primary bg-white text-black hover:bg-green hover:text-black hover:border-white transition-all duration-300 hover:scale-105 active:scale-95"
+                                    >
+                                        Visit Live Site
+                                        <ExternalLink size={16} />
+                                    </a>
+                                </div>
+                            )}
                             <div className="fade-in-later">
                                 <p className="text-muted-foreground font-anton mb-3">
                                     Description
@@ -187,6 +196,22 @@ const ProjectDetails = ({ project }: Props) => {
                         <ArrowAnimation />
                     </div>
                 </div>
+
+                {project.video && (
+                    <div className="fade-in-later max-w-[800px] mx-auto mb-10 w-full">
+                        <p className="text-muted-foreground font-anton mb-3 uppercase tracking-wider text-sm">
+                            Project Demo Video
+                        </p>
+                        <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border shadow-2xl bg-black/40 group/video">
+                            <iframe
+                                src={project.video}
+                                allow="autoplay; encrypted-media"
+                                allowFullScreen
+                                className="w-full h-full border-none rounded-lg"
+                            />
+                        </div>
+                    </div>
+                )}
 
                 <div
                     className="fade-in-later relative flex flex-col gap-2 max-w-[800px] mx-auto"
