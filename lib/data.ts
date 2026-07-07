@@ -54,10 +54,6 @@ export const MY_STACK = {
             name: 'Flask',
             icon: '/logo/flask.svg',
         },
-        {
-            name: 'Node.js',
-            icon: '/logo/node.png',
-        },
     ],
     database: [
         {
@@ -82,10 +78,64 @@ export const MY_STACK = {
             name: 'AWS',
             icon: '/logo/aws.png',
         },
+        {
+            name: 'n8n',
+            icon: '/logo/n8n.png',
+        },
     ],
 };
 
 export const PROJECTS: IProject[] = [
+    {
+        title: 'FinOCR',
+        slug: 'fin-ocr',
+        year: 2026,
+        description: `
+      FinOCR is a financial document processing and analysis application that automates receipt and invoice OCR, expense extraction, and analytics. Built using a modern React/Vite frontend and a high-performance FastAPI backend, the system integrates advanced AI-driven extraction capabilities to streamline personal and business expense tracking. <br/> <br/>
+      
+      <strong>🌟 Core Platform Features:</strong>
+      <ul>
+        <li><strong>Intelligent OCR Scanner:</strong> Upload receipt and invoice images or documents for real-time text parsing and data extraction using AI/Gemini.</li>
+        <li><strong>Interactive Financial Analytics:</strong> Visual dashboard with timelines, expense distribution charts, and trends to track spending habits.</li>
+        <li><strong>Expense Management Hub:</strong> Complete CRUD workflows for editing transaction details, auditing scan results, and browsing receipt histories.</li>
+        <li><strong>Secure User Authentication:</strong> Fully integrated Auth0 authorization flow covering signup, login, and secure user session management.</li>
+        <li><strong>Dual-Theme & Responsive Interface:</strong> A premium, responsive interface featuring light/dark mode support and built using Tailwind CSS and Radix UI components.</li>
+      </ul>
+      `,
+        role: `
+      <strong>Full Stack Developer</strong> <br/>
+      I architected and built the OCR-based financial intelligence system, designing both the AI-powered backend API and the interactive analytics frontend:
+      <ul>
+        <li><strong>Vite + React Frontend:</strong> Engineered a responsive dashboard with real-time financial tracking, Radix UI component states, and Auth0 authentication wrappers.</li>
+        <li><strong>FastAPI Backend API:</strong> Implemented a high-performance Python REST API with SQLite database integration, transaction audit endpoints, and Gemini API OCR extraction logic.</li>
+        <li><strong>OCR Extraction Pipeline:</strong> Integrated intelligent processing for uploaded invoices and receipts, automating date, merchant, and line-item extraction.</li>
+      </ul>
+      `,
+        techStack: [
+            'Python',
+            'FastAPI',
+            'Gemini API',
+            'SQLite',
+            'React.js',
+            'TypeScript',
+            'Vite',
+            'Tailwind CSS',
+            'Radix UI'
+        ],
+        thumbnail: '/projects/thumbnail/finocr.png',
+        longThumbnail: '/projects/long/finocr.png',
+        images: [
+            '/projects/images/findashboard.png',
+            '/projects/images/finAnalytics.png',
+            '/projects/images/finExpense.png',
+            '/projects/images/finNewTransactions.png',
+            '/projects/images/finProfile.png',
+            '/projects/images/finLogin.png',
+        ],
+        sourceCode: 'https://github.com/vrlegacy/fin_ocr_frontend',
+        sourceCodeBackend: 'https://github.com/vrlegacy/fin_ocr_backend',
+        liveUrl: 'https://fin-ocr-frontend.pages.dev/',
+    },
     {
         title: 'Civix',
         slug: 'civix',
@@ -132,7 +182,7 @@ export const PROJECTS: IProject[] = [
             '/projects/images/civix-home.png',
             '/projects/images/civix-dashboard.png',
         ],
-        sourceCode: 'https://github.com/vrlegacy/Civix-Digital-Civic-Engagement-Petition-Platform',
+        sourceCode: 'https://github.com/vrlegacy/civix-frontend',
         liveUrl: 'https://civix-zeta.vercel.app/',
         video: 'https://drive.google.com/file/d/1uhYGms1CHXoL4E4Js9MHp-OCbBMd6e3g/preview',
     },
@@ -148,6 +198,7 @@ export const PROJECTS: IProject[] = [
         <li>👁️ Severity Grading: Convolutional Neural Network (CNN) model trained to categorize DR stages.</li>
         <li>🧪 Advanced Preprocessing: Customized image pipelines leveraging CLAHE, resizing, and normalization to enhance feature resolution.</li>
         <li>🖥️ Diagnostic Dashboard: A clean, intuitive web portal for uploading retinal images and displaying immediate model predictions.</li>
+        <li>🔗 Repositories: Integrates model inference and deep learning concepts.</li>
       </ul>
       `,
         role: `
@@ -174,7 +225,7 @@ export const PROJECTS: IProject[] = [
         images: [
            //  project images added to be here
         ],
-        sourceCode: 'https://github.com/vrlegacy/Diabetic-retinopathy-detection-using-machine-learning-concept',
+        sourceCode: 'https://github.com/vrlegacy/diabetic-detection-system',
     },
 ];
 

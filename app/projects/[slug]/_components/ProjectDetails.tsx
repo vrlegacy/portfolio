@@ -52,28 +52,6 @@ const ProjectDetails = ({ project }: Props) => {
         { scope: containerRef },
     );
 
-    // blur info div and make it smaller on scroll
-    useGSAP(
-        () => {
-            if (window.innerWidth < 992) return;
-
-            gsap.to('#info', {
-                filter: 'blur(3px)',
-                autoAlpha: 0,
-                scale: 0.9,
-                // position: 'sticky',
-                scrollTrigger: {
-                    trigger: '#info',
-                    start: 'bottom bottom',
-                    end: 'bottom top',
-                    pin: true,
-                    pinSpacing: false,
-                    scrub: 0.5,
-                },
-            });
-        },
-        { scope: containerRef },
-    );
 
     // parallax effect on images
     useGSAP(
@@ -103,33 +81,54 @@ const ProjectDetails = ({ project }: Props) => {
                 <TransitionLink
                     back
                     href="/"
-                    className="mb-16 inline-flex gap-2 items-center group h-12"
+                    className="mb-8 lg:mb-16 inline-flex gap-2 items-center group h-12"
                 >
                     <ArrowLeft className="group-hover:-translate-x-1 group-hover:text-primary transition-all duration-300" />
                     Back
                 </TransitionLink>
 
-                <div
-                    className="top-0 min-h-[calc(100svh-100px)] flex"
-                    id="info"
-                >
-                    <div className="relative w-full">
-                        <div className="flex items-start gap-6 mx-auto mb-10 max-w-[635px]">
+                <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 relative items-start">
+                    {/* Left side: Text Info */}
+                    <div
+                        className="lg:w-[45%] flex-shrink-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] overflow-y-auto pb-10 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                        id="info"
+                    >
+                        <div className="flex flex-col gap-4 mb-8">
                             <h1 className="fade-in-later opacity-0 text-4xl md:text-[60px] leading-none font-anton overflow-hidden">
                                 <span className="inline-block">
                                     {project.title}
                                 </span>
                             </h1>
 
-                            <div className="fade-in-later opacity-0 flex gap-2">
+                            <div className="fade-in-later opacity-0 flex items-center gap-4 flex-wrap">
                                 {project.sourceCode && (
                                     <a
                                         href={project.sourceCode}
                                         target="_blank"
                                         rel="noreferrer noopener"
-                                        className="hover:text-primary"
+                                        className="hover:text-primary flex items-center gap-1.5 transition-all hover:scale-105"
+                                        title={project.sourceCodeBackend ? "Frontend Source Code" : "GitHub Repository"}
                                     >
                                         <GithubIcon size={30} />
+                                        {project.sourceCodeBackend && (
+                                            <span className="text-xs font-semibold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 rounded px-1.5 py-0.5">
+                                                Frontend
+                                            </span>
+                                        )}
+                                    </a>
+                                )}
+                                {project.sourceCodeBackend && (
+                                    <a
+                                        href={project.sourceCodeBackend}
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="hover:text-primary flex items-center gap-1.5 transition-all hover:scale-105"
+                                        title="Backend Source Code"
+                                    >
+                                        <GithubIcon size={30} />
+                                        <span className="text-xs font-semibold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 rounded px-1.5 py-0.5">
+                                            Backend
+                                        </span>
                                     </a>
                                 )}
                                 {project.liveUrl && (
@@ -137,7 +136,7 @@ const ProjectDetails = ({ project }: Props) => {
                                         href={project.liveUrl}
                                         target="_blank"
                                         rel="noreferrer noopener"
-                                        className="hover:text-primary"
+                                        className="hover:text-primary transition-all hover:scale-105"
                                     >
                                         <ExternalLink size={30} />
                                     </a>
@@ -145,15 +144,11 @@ const ProjectDetails = ({ project }: Props) => {
                             </div>
                         </div>
 
-                        <div className="max-w-[635px] space-y-7 pb-20 mx-auto">
-                            <div className="fade-in-later">
-                            
-                            </div>
+                        <div className="space-y-7">
                             <div className="fade-in-later">
                                 <p className="text-muted-foreground font-anton mb-3">
-                                    Technologies Used 
+                                    Technologies Used
                                 </p>
-
                                 <div className="text-lg">
                                     {project.techStack.join(', ')}
                                 </div>
@@ -175,7 +170,6 @@ const ProjectDetails = ({ project }: Props) => {
                                 <p className="text-muted-foreground font-anton mb-3">
                                     Description
                                 </p>
-
                                 <div className="text-lg prose-xl markdown-text">
                                     {parse(project.description)}
                                 </div>
@@ -185,7 +179,6 @@ const ProjectDetails = ({ project }: Props) => {
                                     <p className="text-muted-foreground font-anton mb-3">
                                         My Role
                                     </p>
-
                                     <div className="text-lg">
                                         {parse(project.role)}
                                     </div>
@@ -193,50 +186,55 @@ const ProjectDetails = ({ project }: Props) => {
                             )}
                         </div>
 
-                        <ArrowAnimation />
-                    </div>
-                </div>
-
-                {project.video && (
-                    <div className="fade-in-later max-w-[800px] mx-auto mb-10 w-full">
-                        <p className="text-muted-foreground font-anton mb-3 uppercase tracking-wider text-sm">
-                            Project Demo Video
-                        </p>
-                        <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border shadow-2xl bg-black/40 group/video">
-                            <iframe
-                                src={project.video}
-                                allow="autoplay; encrypted-media"
-                                allowFullScreen
-                                className="w-full h-full border-none rounded-lg"
-                            />
+                        <div className="lg:hidden mt-10">
+                            <ArrowAnimation />
                         </div>
                     </div>
-                )}
 
-                <div
-                    className="fade-in-later relative flex flex-col gap-2 max-w-[800px] mx-auto"
-                    id="images"
-                >
-                    {project.images.map((image) => (
+                    {/* Right side: Media */}
+                    <div className="lg:w-[55%] flex flex-col gap-10 lg:gap-16 pt-4 lg:pt-0" id="media-column">
+                        {project.video && (
+                            <div className="fade-in-later w-full">
+                                <p className="text-muted-foreground font-anton mb-3 uppercase tracking-wider text-sm">
+                                    Project Demo Video
+                                </p>
+                                <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border shadow-2xl bg-black/40 group/video">
+                                    <iframe
+                                        src={project.video}
+                                        allow="autoplay; encrypted-media"
+                                        allowFullScreen
+                                        className="w-full h-full border-none rounded-lg"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
                         <div
-                            key={image}
-                            className="group relative w-full aspect-[750/400] bg-background-light"
-                            style={{
-                                backgroundImage: `url(${image})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center 50%',
-                                backgroundRepeat: 'no-repeat',
-                            }}
+                            className="fade-in-later relative flex flex-col gap-8 w-full"
+                            id="images"
                         >
-                            <a
-                                href={image}
-                                target="_blank"
-                                className="absolute top-4 right-4 bg-background/70 text-foreground size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-primary-foreground group-hover:opacity-100"
-                            >
-                                <ExternalLink />
-                            </a>
+                            {project.images.map((image) => (
+                                <div
+                                    key={image}
+                                    className="group relative w-full aspect-[750/400] bg-background-light rounded-lg overflow-hidden"
+                                    style={{
+                                        backgroundImage: `url(${image})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center 50%',
+                                        backgroundRepeat: 'no-repeat',
+                                    }}
+                                >
+                                    <a
+                                        href={image}
+                                        target="_blank"
+                                        className="absolute top-4 right-4 bg-background/70 text-foreground size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-primary-foreground group-hover:opacity-100 rounded-full"
+                                    >
+                                        <ExternalLink />
+                                    </a>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
                 </div>
             </div>
         </section>

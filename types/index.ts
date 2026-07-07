@@ -27,5 +27,6 @@ export interface IProject {
     slug: string;
     liveUrl?: string;
     sourceCode?: string;
+    sourceCodeBackend?: string;
     video?: string;
 }
