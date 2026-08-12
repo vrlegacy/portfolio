@@ -7,6 +7,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import Image from 'next/image';
 import React, { useRef, useState, MouseEvent } from 'react';
+import { ExternalLink } from 'lucide-react';
 import Project from './Project';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -51,6 +52,18 @@ const ProjectList = () => {
                                 key={project.slug}
                             />
                         ))}
+                    </div>
+
+                    <div className="mt-12 md:mt-16 flex justify-center">
+                        <a
+                            href="https://github.com/vrlegacy?tab=repositories"
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full text-base font-anton uppercase tracking-wider border border-border bg-background-light text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg"
+                        >
+                            <span>See More Projects</span>
+                            <ExternalLink className="size-5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                        </a>
                     </div>
                 </div>
             </div>

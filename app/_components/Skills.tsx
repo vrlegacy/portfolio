@@ -86,7 +86,7 @@ const Skills = () => {
                                                 className="max-h-10"
                                             />
                                         </div>
-                                        <span className="text-2xl capitalize transition-all duration-700 bg-gradient-to-r from-primary to-foreground from-[50%] to-[50%] bg-[length:200%] bg-right bg-clip-text text-transparent group-hover:bg-left w-fit">
+                                        <span className={`text-2xl transition-all duration-700 bg-gradient-to-r from-primary to-foreground from-[50%] to-[50%] bg-[length:200%] bg-right bg-clip-text text-transparent group-hover:bg-left w-fit ${item.name.toLowerCase() === 'n8n' ? 'normal-case' : 'capitalize'}`}>
                                             {item.name}
                                         </span>
                                     </div>

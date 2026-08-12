@@ -91,31 +91,33 @@ export const PROJECTS: IProject[] = [
         slug: 'fin-ocr',
         year: 2026,
         description: `
-      FinOCR is a financial document processing and analysis application that automates receipt and invoice OCR, expense extraction, and analytics. Built using a modern React/Vite frontend and a high-performance FastAPI backend, the system integrates advanced AI-driven extraction capabilities to streamline personal and business expense tracking. <br/> <br/>
+      FinOCR is a financial document processing and analysis application that automates receipt and invoice OCR, expense extraction, and analytics. Built using a modern React/Vite frontend and a high-performance FastAPI backend, the system leverages local Gemma models running on Ollama alongside Google Gemini API for intelligent text extraction, Auth0 for user authentication, and Supabase for secure cloud storage. It delivers comprehensive financial analytics, providing detailed daily and monthly spend breakdowns. <br/> <br/>
       
       <strong>🌟 Core Platform Features:</strong>
       <ul>
-        <li><strong>Intelligent OCR Scanner:</strong> Upload receipt and invoice images or documents for real-time text parsing and data extraction using AI/Gemini.</li>
-        <li><strong>Interactive Financial Analytics:</strong> Visual dashboard with timelines, expense distribution charts, and trends to track spending habits.</li>
+        <li><strong>Intelligent OCR Scanner:</strong> Upload receipt and invoice images or documents for real-time text parsing and data extraction using Gemma (via Ollama) and Gemini AI.</li>
+        <li><strong>Daily & Monthly Spend Analytics:</strong> Visual dashboard with timelines, daily/monthly spend charts, expense distribution, and spending trend analytics.</li>
         <li><strong>Expense Management Hub:</strong> Complete CRUD workflows for editing transaction details, auditing scan results, and browsing receipt histories.</li>
-        <li><strong>Secure User Authentication:</strong> Fully integrated Auth0 authorization flow covering signup, login, and secure user session management.</li>
-        <li><strong>Dual-Theme & Responsive Interface:</strong> A premium, responsive interface featuring light/dark mode support and built using Tailwind CSS and Radix UI components.</li>
+        <li><strong>Secure User Authentication & Storage:</strong> Integrated Auth0 authorization flow for secure authentication, paired with Supabase for cloud document storage.</li>
+        <li><strong>Dual-Theme & Responsive Interface:</strong> A premium, responsive interface featuring light/dark mode support built with Tailwind CSS and Radix UI components.</li>
       </ul>
       `,
         role: `
       <strong>Full Stack Developer</strong> <br/>
       I architected and built the OCR-based financial intelligence system, designing both the AI-powered backend API and the interactive analytics frontend:
       <ul>
-        <li><strong>Vite + React Frontend:</strong> Engineered a responsive dashboard with real-time financial tracking, Radix UI component states, and Auth0 authentication wrappers.</li>
-        <li><strong>FastAPI Backend API:</strong> Implemented a high-performance Python REST API with SQLite database integration, transaction audit endpoints, and Gemini API OCR extraction logic.</li>
+        <li><strong>Vite + React Frontend:</strong> Engineered a responsive dashboard with real-time financial tracking, daily/monthly analytics charts, Radix UI components, and Auth0 authentication wrappers.</li>
+        <li><strong>FastAPI Backend API:</strong> Implemented a high-performance Python REST API with Supabase storage integration, Ollama/Gemma local model inference, transaction audit endpoints, and Gemini API OCR extraction.</li>
         <li><strong>OCR Extraction Pipeline:</strong> Integrated intelligent processing for uploaded invoices and receipts, automating date, merchant, and line-item extraction.</li>
       </ul>
       `,
         techStack: [
             'Python',
             'FastAPI',
+            'Gemma (Ollama)',
             'Gemini API',
-            'SQLite',
+            'Auth0',
+            'Supabase',
             'React.js',
             'TypeScript',
             'Vite',
@@ -191,11 +193,11 @@ export const PROJECTS: IProject[] = [
         slug: 'trigo-travel-partner',
         year: 2026,
         description: `
-      TriGo Trip Planner is a chat-based AI travel assistant built using n8n. It uses Google Gemini as the main LLM to understand user requests and generate personalized travel plans. The system also uses memory to maintain context throughout the conversation, making the interaction more natural and useful. <br/> <br/>
+      TriGo Trip Planner is a chat-based AI travel assistant built using n8n. It uses Google Gemini and Gemma models as the main LLMs to understand user requests and generate personalized travel plans. The system also uses memory to maintain context throughout the conversation, making the interaction more natural and useful. <br/> <br/>
       
       <strong>🌟 Core Platform Features:</strong>
       <ul>
-        <li><strong>AI Travel Assistant:</strong> Conversational travel planner powered by Google Gemini LLM to interpret user requirements and craft customized itineraries.</li>
+        <li><strong>AI Travel Assistant:</strong> Conversational travel planner powered by Google Gemini and Gemma LLM models to interpret user requirements and craft customized itineraries.</li>
         <li><strong>Conversational Memory:</strong> Contextual memory management across chat sessions ensuring smooth, natural, multi-turn interactions.</li>
         <li><strong>Attraction Discovery:</strong> Real-time integration with OpenTripMap API to find top local attractions and points of interest.</li>
         <li><strong>Route & Time Calculation:</strong> Powered by OpenRouteService to compute travel distances and estimated journey times between locations.</li>
@@ -206,7 +208,7 @@ export const PROJECTS: IProject[] = [
       <strong>AI & Full Stack Developer</strong> <br/>
       Designed and implemented the AI orchestration workflow and system integrations:
       <ul>
-        <li><strong>n8n Workflow Engineering:</strong> Constructed multi-step automation workflows connecting Gemini LLM with external geo and travel APIs.</li>
+        <li><strong>n8n Workflow Engineering:</strong> Constructed multi-step automation workflows connecting Gemini and Gemma LLMs with external geo and travel APIs.</li>
         <li><strong>LLM Prompt & Schema Design:</strong> Engineered structured prompts to guarantee reliable JSON output with daily schedules and expense estimates.</li>
         <li><strong>API & Memory Orchestration:</strong> Implemented memory buffers for conversational context retention and integrated OpenTripMap and OpenRouteService API services.</li>
       </ul>
@@ -214,6 +216,7 @@ export const PROJECTS: IProject[] = [
         techStack: [
             'n8n',
             'Google Gemini',
+            'Gemma',
             'OpenTripMap',
             'OpenRouteService',
             'TypeScript',
