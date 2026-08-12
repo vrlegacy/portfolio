@@ -187,6 +187,49 @@ export const PROJECTS: IProject[] = [
         video: 'https://drive.google.com/file/d/1uhYGms1CHXoL4E4Js9MHp-OCbBMd6e3g/preview',
     },
     {
+        title: 'TriGo Travel Partner',
+        slug: 'trigo-travel-partner',
+        year: 2026,
+        description: `
+      TriGo Trip Planner is a chat-based AI travel assistant built using n8n. It uses Google Gemini as the main LLM to understand user requests and generate personalized travel plans. The system also uses memory to maintain context throughout the conversation, making the interaction more natural and useful. <br/> <br/>
+      
+      <strong>🌟 Core Platform Features:</strong>
+      <ul>
+        <li><strong>AI Travel Assistant:</strong> Conversational travel planner powered by Google Gemini LLM to interpret user requirements and craft customized itineraries.</li>
+        <li><strong>Conversational Memory:</strong> Contextual memory management across chat sessions ensuring smooth, natural, multi-turn interactions.</li>
+        <li><strong>Attraction Discovery:</strong> Real-time integration with OpenTripMap API to find top local attractions and points of interest.</li>
+        <li><strong>Route & Time Calculation:</strong> Powered by OpenRouteService to compute travel distances and estimated journey times between locations.</li>
+        <li><strong>Structured JSON Itineraries:</strong> Standardized JSON output containing trip name, duration, daily activity breakdowns, and cost estimates for clear UI rendering.</li>
+      </ul>
+      `,
+        role: `
+      <strong>AI & Full Stack Developer</strong> <br/>
+      Designed and implemented the AI orchestration workflow and system integrations:
+      <ul>
+        <li><strong>n8n Workflow Engineering:</strong> Constructed multi-step automation workflows connecting Gemini LLM with external geo and travel APIs.</li>
+        <li><strong>LLM Prompt & Schema Design:</strong> Engineered structured prompts to guarantee reliable JSON output with daily schedules and expense estimates.</li>
+        <li><strong>API & Memory Orchestration:</strong> Implemented memory buffers for conversational context retention and integrated OpenTripMap and OpenRouteService API services.</li>
+      </ul>
+      `,
+        techStack: [
+            'n8n',
+            'Google Gemini',
+            'OpenTripMap',
+            'OpenRouteService',
+            'TypeScript',
+            'REST API',
+            'JSON'
+        ],
+        thumbnail: '/projects/thumbnail/trigo.png',
+        longThumbnail: '/projects/long/trigo.png',
+        images: [
+            '/projects/images/trigo-home.png',
+            '/projects/images/trigo-form.png',
+        ],
+        sourceCode: 'https://github.com/vrlegacy/trigo-travel-planenr',
+        liveUrl: 'https://vishwas-n8n-frontend.slicearrow.com/',
+    },
+    {
         title: 'Diabetic Retinopathy Detection System',
         slug: 'diabetic-retinopathy-detection',
         year: 2025,
