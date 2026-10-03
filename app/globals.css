@@ -1,56 +1,108 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
-@layer base {
-    :root {
-        --background: 0 0% 13%;
-        --background-light: 0 0% 19%;
-        --foreground: 0 0% 87%;
-
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-
-        --primary: 140 100% 47%;
-        --primary-foreground: 0 0% 13%;
-        --secondary: 193 100% 47%;
-        --secondary-foreground: 0 0% 13%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 71%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 24%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
-    }
+:root {
+  --background: #FAFAF7;
+  --foreground: #1C1917;
+  --card: #FFFFFF;
+  --card-foreground: #1C1917;
+  --card-muted: #F3F1EA;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1917;
+  --primary: #C2410C;
+  --primary-hover: #9A3412;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F3F1EA;
+  --secondary-foreground: #1C1917;
+  --muted: #F3F1EA;
+  --muted-foreground: #57534E;
+  --accent: #FFEDD5;
+  --accent-foreground: #C2410C;
+  --border: #E7E5E4;
+  --border-strong: #D6D3D1;
+  --ring: #C2410C;
+  --radius: 0.5rem;
 }
 
-@layer base {
-    ::-webkit-scrollbar {
-        display: none;
-    }
-    * {
-        @apply border-border !cursor-none;
-    }
-    body {
-        @apply bg-background text-foreground font-roboto-flex;
-    }
+.dark {
+  --background: #0C0A09;
+  --foreground: #FAFAF9;
+  --card: #1C1917;
+  --card-foreground: #FAFAF9;
+  --card-muted: #292524;
+  --popover: #1C1917;
+  --popover-foreground: #FAFAF9;
+  --primary: #FB923C;
+  --primary-hover: #FDBA74;
+  --primary-foreground: #0C0A09;
+  --secondary: #292524;
+  --secondary-foreground: #FAFAF9;
+  --muted: #292524;
+  --muted-foreground: #A8A29E;
+  --accent: #431407;
+  --accent-foreground: #FB923C;
+  --border: #292524;
+  --border-strong: #44403C;
+  --ring: #FB923C;
 }
 
-@layer components {
-    .grid {
-        @apply gap-[25px];
-    }
+html {
+  scroll-behavior: smooth;
+}
 
-    .markdown-text ul {
-        @apply pl-5 mt-2 list-disc;
-    }
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-roboto-flex), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #C2410C;
+  color: #FFFFFF;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D6D3D1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #44403C;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A8A29E;
+}
+
+/* Custom Utilities for Resume Styling */
+.resume-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(194, 65, 12, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  border-color: var(--border-strong);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
 }

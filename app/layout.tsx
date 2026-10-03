@@ -1,36 +1,52 @@
 import type { Metadata } from 'next';
-import { Anton, Roboto_Flex } from 'next/font/google';
-import SmoothScroll from '@/components/SmoothScroll';
-
-import 'lenis/dist/lenis.css';
+import { Roboto_Flex } from 'next/font/google';
 import './globals.css';
-import Footer from '@/components/Footer';
-import ScrollProgressIndicator from '@/components/ScrollProgressIndicator';
-import ParticleBackground from '@/components/ParticleBackground';
 import Navbar from '@/components/Navbar';
-import CustomCursor from '@/components/CustomCursor';
-import Preloader from '../components/Preloader';
-import { ContactModalProvider } from '@/components/ContactModalContext';
-import ContactModal from '@/components/ContactModal';
-
-
-const antonFont = Anton({
-    weight: '400',
-    style: 'normal',
-    subsets: ['latin'],
-    variable: '--font-anton',
-});
+import Footer from '@/components/Footer';
 
 const robotoFlex = Roboto_Flex({
-    weight: ['100', '400', '500', '600', '700', '800'],
+    weight: ['300', '400', '500', '600', '700', '800'],
     style: 'normal',
     subsets: ['latin'],
     variable: '--font-roboto-flex',
 });
 
 export const metadata: Metadata = {
-    title: 'Portfolio - Vishwas Rudramurthy',
-    description: 'Personal portfolio of Vishwas Rudramurthy',
+    title: 'Vishwas Rudramurthy | FullStack and AI Developer',
+    description:
+        'Portfolio of Vishwas Rudramurthy, a FullStack and AI developer skilled in Python, FastAPI, React, and AI workflow automation.',
+    keywords: [
+        'Vishwas Rudramurthy',
+        'FullStack Developer',
+        'AI Developer',
+        'Python Developer',
+        'FastAPI',
+        'React',
+        'Next.js',
+        'n8n',
+        'Gemini API',
+        'TypeScript',
+        'Software Engineer',
+    ],
+    authors: [{ name: 'Vishwas Rudramurthy' }],
+    openGraph: {
+        title: 'Vishwas Rudramurthy | FullStack and AI Developer',
+        description:
+            'Portfolio of Vishwas Rudramurthy, a FullStack and AI developer skilled in Python, FastAPI, React, and AI workflow automation.',
+        url: 'https://vishwasrudramurthy.dev',
+        siteName: 'Vishwas Rudramurthy Portfolio',
+        locale: 'en_US',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Vishwas Rudramurthy | FullStack and AI Developer',
+        description:
+            'Portfolio of Vishwas Rudramurthy, a FullStack and AI developer skilled in Python, FastAPI, React, and AI workflow automation.',
+    },
+    icons: {
+        icon: '/favicon.ico',
+    },
 };
 
 export default function RootLayout({
@@ -39,33 +55,13 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className="scroll-smooth">
             <body
-                className={`${antonFont.variable} ${robotoFlex.variable} antialiased`}
-                suppressHydrationWarning
+                className={`${robotoFlex.variable} font-sans bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased min-h-screen flex flex-col`}
             >
-                <SmoothScroll>
-                    <ContactModalProvider>
-                        {/* <a
-                            href="https://forms.gle/t73XYJgWD5cJNr6e8"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 block bg-black text-center z-[1] text-sm py-2 hover:text-primary transition-all"
-                        >
-                            Frontend dev? I&apos;ll help you polish your resume —
-                            completely free.
-                        </a> */}
-                        <Navbar />
-                        <main>{children}</main>
-                        <Footer />
-
-                        <CustomCursor />
-                        <Preloader />
-                        <ScrollProgressIndicator />
-                        <ParticleBackground />
-                        <ContactModal />
-                    </ContactModalProvider>
-                </SmoothScroll>
+                <Navbar />
+                <div className="flex-1">{children}</div>
+                <Footer />
             </body>
         </html>
     );

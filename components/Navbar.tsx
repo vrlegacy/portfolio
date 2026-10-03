@@ -1,181 +1,146 @@
 'use client';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
-import { MoveUpRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { GENERAL_INFO, SOCIAL_LINKS } from '@/lib/data';
-import { useContactModal } from '@/components/ContactModalContext';
 
-const COLORS = [
-    'bg-yellow-500 text-black',
-    'bg-blue-500 text-white',
-    'bg-teal-500 text-black',
-    'bg-indigo-500 text-white',
-    'bg-rose-500 text-white',
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X, FileText } from 'lucide-react';
+import { GENERAL_INFO } from '@/lib/data';
+
+const NAV_LINKS = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/#about' },
+    { name: 'Skills', href: '/#skills' },
+    { name: 'Projects', href: '/projects' },
+    { name: 'Experience', href: '/experience' },
+    { name: 'Resume', href: '/resume' },
+    { name: 'Contact', href: '/contact' },
 ];
 
-const MENU_LINKS = [
-    {
-        name: 'Home',
-        url: '/',
-    },
-    {
-        name: 'About Me',
-        url: '/#about-me',
-    },
-    {
-        name: 'Experience',
-        url: '/#my-experience',
-    },
-    {
-        name: 'Projects',
-        url: '/#selected-projects',
-    },
-];
+export default function Navbar() {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const pathname = usePathname();
 
-const Navbar = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const router = useRouter();
-    const { openContactModal } = useContactModal();
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 20) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
 
     return (
-        <>
-            <div className="sticky top-0 z-[4]">
-                <button
-                    className={cn(
-                        'group size-12 absolute top-5 right-5 md:right-10 z-[2]',
-                    )}
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+        <header
+            className={`sticky top-0 z-50 transition-all duration-200 border-b ${
+                isScrolled
+                    ? 'bg-[#FAFAF7]/90 dark:bg-[#0C0A09]/90 backdrop-blur-md border-[#E7E5E4] dark:border-[#292524] shadow-sm py-3'
+                    : 'bg-[#FAFAF7] dark:bg-[#0C0A09] border-[#E7E5E4] dark:border-[#292524] py-4'
+            }`}
+        >
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+                {/* Brand / Logo */}
+                <Link
+                    href="/"
+                    className="flex items-center gap-2 font-bold text-lg text-[#1C1917] dark:text-[#FAFAF9] group"
+                    onClick={closeMobileMenu}
                 >
-                    <span
-                        className={cn(
-                            'inline-block w-3/5 h-0.5 bg-foreground rounded-full absolute left-1/2 -translate-x-1/2 top-1/2 duration-300 -translate-y-[5px] ',
-                            {
-                                'rotate-45 -translate-y-1/2': isMenuOpen,
-                                'md:group-hover:rotate-12': !isMenuOpen,
-                            },
-                        )}
-                    ></span>
-                    <span
-                        className={cn(
-                            'inline-block w-3/5 h-0.5 bg-foreground rounded-full absolute left-1/2 -translate-x-1/2 top-1/2 duration-300 translate-y-[5px] ',
-                            {
-                                '-rotate-45 -translate-y-1/2': isMenuOpen,
-                                'md:group-hover:-rotate-12': !isMenuOpen,
-                            },
-                        )}
-                    ></span>
+                    <span className="w-8 h-8 rounded-lg bg-[#C2410C] text-white flex items-center justify-center font-mono text-sm font-extrabold group-hover:bg-[#9A3412] transition-colors shadow-xs">
+                        VR
+                    </span>
+                    <span className="tracking-tight">
+                        Vishwas <span className="text-[#C2410C] dark:text-[#FB923C] font-semibold">Rudramurthy</span>
+                    </span>
+                </Link>
+
+                {/* Desktop Navigation */}
+                <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+                    {NAV_LINKS.map((link) => {
+                        const isActive = pathname === link.href;
+                        return (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className={`px-3 py-1.5 rounded-md transition-colors ${
+                                    isActive
+                                        ? 'bg-[#F3F1EA] dark:bg-[#292524] text-[#C2410C] dark:text-[#FB923C] font-semibold'
+                                        : 'text-[#57534E] dark:text-[#A8A29E] hover:text-[#C2410C] dark:hover:text-[#FB923C] hover:bg-[#F3F1EA]/60 dark:hover:bg-[#1C1917]'
+                                }`}
+                            >
+                                {link.name}
+                            </Link>
+                        );
+                    })}
+                </nav>
+
+                {/* Resume Download CTA (Desktop) */}
+                <div className="hidden md:flex items-center gap-3">
+                    <a
+                        href={GENERAL_INFO.resumePdf}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-md bg-[#C2410C] hover:bg-[#9A3412] text-white transition-colors shadow-xs"
+                    >
+                        <FileText size={14} />
+                        Resume PDF
+                    </a>
+                </div>
+
+                {/* Mobile Hamburger Button */}
+                <button
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    className="md:hidden p-2 rounded-md text-[#1C1917] dark:text-[#FAFAF9] hover:bg-[#F3F1EA] dark:hover:bg-[#292524] transition-colors"
+                    aria-label="Toggle navigation menu"
+                >
+                    {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
                 </button>
             </div>
 
-            <div
-                className={cn(
-                    'overlay fixed inset-0 z-[2] bg-black/70 transition-all duration-150',
-                    {
-                        'opacity-0 invisible pointer-events-none': !isMenuOpen,
-                    },
-                )}
-                onClick={() => setIsMenuOpen(false)}
-            ></div>
-
-            <div
-                className={cn(
-                    'fixed top-0 right-0 h-[100dvh] w-[500px] max-w-[calc(100vw-3rem)] transform translate-x-full transition-transform duration-700 z-[3] overflow-hidden gap-y-14',
-                    'flex flex-col lg:justify-center py-10',
-                    { 'translate-x-0': isMenuOpen },
-                )}
-            >
-                <div
-                    className={cn(
-                        'fixed inset-0 scale-150 translate-x-1/2 rounded-[50%] bg-background-light duration-700 delay-150 z-[-1]',
-                        {
-                            'translate-x-0': isMenuOpen,
-                        },
-                    )}
-                ></div>
-
-                <div className="grow flex md:items-center w-full max-w-[300px] mx-8 sm:mx-auto">
-                    <div className="flex gap-10 lg:justify-between max-lg:flex-col w-full">
-                        <div className="max-lg:order-2">
-                            <p className="text-muted-foreground mb-5 md:mb-8">
-                                SOCIAL
-                            </p>
-                            <ul className="space-y-3">
-                                {SOCIAL_LINKS.map((link) => (
-                                    <li key={link.name}>
-                                        <a
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="text-lg capitalize hover:underline"
-                                        >
-                                            {link.name}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="">
-                            <p className="text-muted-foreground mb-5 md:mb-8">
-                                MENU
-                            </p>
-                            <ul className="space-y-3">
-                                {MENU_LINKS.map((link, idx) => (
-                                    <li key={link.name}>
-                                        <button
-                                            onClick={() => {
-                                                router.push(link.url);
-                                                setIsMenuOpen(false);
-                                            }}
-                                            className="group text-xl flex items-center gap-3"
-                                        >
-                                            <span
-                                                className={cn(
-                                                    'size-3.5 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-[200%] transition-all',
-                                                    COLORS[idx % COLORS.length],
-                                                )}
-                                            >
-                                                <MoveUpRight
-                                                    size={8}
-                                                    className="scale-0 group-hover:scale-100 transition-all"
-                                                />
-                                            </span>
-                                            {link.name}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+            {/* Mobile Slide-down Menu */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden border-b border-[#E7E5E4] dark:border-[#292524] bg-[#FAFAF7] dark:bg-[#0C0A09] px-4 pt-2 pb-6 space-y-2 animate-in slide-in-from-top duration-200">
+                    <div className="flex flex-col space-y-1">
+                        {NAV_LINKS.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    onClick={closeMobileMenu}
+                                    className={`px-3 py-2.5 rounded-md text-base font-medium transition-colors ${
+                                        isActive
+                                            ? 'bg-[#FFEDD5] dark:bg-[#431407] text-[#C2410C] dark:text-[#FB923C] font-semibold'
+                                            : 'text-[#57534E] dark:text-[#A8A29E] hover:bg-[#F3F1EA] dark:hover:bg-[#1C1917]'
+                                    }`}
+                                >
+                                    {link.name}
+                                </Link>
+                            );
+                        })}
                     </div>
-                </div>
 
-                <div className="w-full max-w-[300px] mx-8 sm:mx-auto">
-                    <div className="mb-6">
-                        <button
-                            onClick={() => {
-                                router.push('/chess');
-                                setIsMenuOpen(false);
-                            }}
-                            className="text-white hover:text-primary hover:underline text-lg font-semibold tracking-wider font-sans cursor-pointer transition-colors duration-200"
+                    <div className="pt-3 border-t border-[#E7E5E4] dark:border-[#292524]">
+                        <a
+                            href={GENERAL_INFO.resumePdf}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={closeMobileMenu}
+                            className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-md bg-[#C2410C] text-white hover:bg-[#9A3412] transition-colors"
                         >
-                            Play Chess
-                        </button>
+                            <FileText size={16} />
+                            Download Resume PDF
+                        </a>
                     </div>
-                    <p className="text-muted-foreground mb-4">GET IN TOUCH</p>
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setIsMenuOpen(false);
-                            openContactModal();
-                        }}
-                        className="text-foreground hover:text-primary transition-colors cursor-pointer text-left block font-sans"
-                    >
-                        {GENERAL_INFO.email}
-                    </button>
                 </div>
-            </div>
-        </>
+            )}
+        </header>
     );
-};
-
-export default Navbar;
+}

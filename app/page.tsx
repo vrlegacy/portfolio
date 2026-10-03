@@ -1,17 +1,25 @@
-import AboutMe from './_components/AboutMe';
-import Banner from './_components/Banner';
-import Experiences from './_components/Experiences';
+import Hero from './_components/Hero';
+import Stats from './_components/Stats';
+import About from './_components/About';
 import Skills from './_components/Skills';
-import ProjectList from './_components/ProjectList';
+import ExperienceTimeline from './_components/ExperienceTimeline';
+import FeaturedProjects from './_components/FeaturedProjects';
+import CaseStudiesTable from './_components/CaseStudiesTable';
+import ResumeSection from './_components/ResumeSection';
+import ContactSection from './_components/ContactSection';
 
 export default function Home() {
     return (
-        <div className="page-">
-            <Banner />
-            <AboutMe />
+        <main className="min-h-screen">
+            <Hero />
+            <Stats />
+            <About />
             <Skills />
-            <Experiences />
-            <ProjectList />
-        </div>
+            <ExperienceTimeline />
+            <FeaturedProjects />
+            <CaseStudiesTable />
+            <ResumeSection />
+            <ContactSection />
+        </main>
     );
 }

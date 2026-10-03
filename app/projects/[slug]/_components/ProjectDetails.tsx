@@ -1,244 +1,157 @@
 'use client';
-import parse from 'html-react-parser';
-import ArrowAnimation from '@/components/ArrowAnimation';
-import TransitionLink from '@/components/TransitionLink';
-import { IProject } from '@/types';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
-import { useRef } from 'react';
 
-const GithubIcon = ({ size = 30 }: { size?: number }) => (
-    <svg
-        height={size}
-        width={size}
-        viewBox="0 0 16 16"
-        fill="currentColor"
-        className="inline-block"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-    </svg>
-);
+import parse from 'html-react-parser';
+import Link from 'next/link';
+import { IProject } from '@/types';
+import { ArrowLeft, ExternalLink, Calendar, Code2 } from 'lucide-react';
+import { GithubIcon } from '@/components/Icons';
 
 interface Props {
     project: IProject;
 }
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-const ProjectDetails = ({ project }: Props) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    useGSAP(
-        () => {
-            if (!containerRef.current) return;
-
-            gsap.set('.fade-in-later', {
-                autoAlpha: 0,
-                y: 30,
-            });
-            const tl = gsap.timeline({
-                delay: 0.5,
-            });
-
-            tl.to('.fade-in-later', {
-                autoAlpha: 1,
-                y: 0,
-                stagger: 0.1,
-            });
-        },
-        { scope: containerRef },
-    );
-
-
-    // parallax effect on images
-    useGSAP(
-        () => {
-            gsap.utils
-                .toArray<HTMLDivElement>('#images > div')
-                .forEach((imageDiv, i) => {
-                    gsap.to(imageDiv, {
-                        backgroundPosition: `center 0%`,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: imageDiv,
-                            start: () => (i ? 'top bottom' : 'top 50%'),
-                            end: 'bottom top',
-                            scrub: true,
-                            // invalidateOnRefresh: true, // to make it responsive
-                        },
-                    });
-                });
-        },
-        { scope: containerRef },
-    );
-
+export default function ProjectDetails({ project }: Props) {
     return (
-        <section className="pt-5 pb-14">
-            <div className="container" ref={containerRef}>
-                <TransitionLink
-                    back
-                    href="/"
-                    className="mb-8 lg:mb-16 inline-flex gap-2 items-center group h-12"
+        <main className="py-12 md:py-20 min-h-screen bg-[#FAFAF7] dark:bg-[#0C0A09]">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6">
+                <Link
+                    href="/projects"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] hover:underline mb-8"
                 >
-                    <ArrowLeft className="group-hover:-translate-x-1 group-hover:text-primary transition-all duration-300" />
-                    Back
-                </TransitionLink>
+                    <ArrowLeft size={14} /> Back to Projects
+                </Link>
 
-                <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 relative items-start">
-                    {/* Left side: Text Info */}
-                    <div
-                        className="lg:w-[45%] flex-shrink-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] overflow-y-auto pb-10 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-                        id="info"
-                    >
-                        <div className="flex flex-col gap-4 mb-8">
-                            <h1 className="fade-in-later opacity-0 text-4xl md:text-[60px] leading-none font-anton overflow-hidden">
-                                <span className="inline-block">
-                                    {project.title}
-                                </span>
-                            </h1>
-
-                            <div className="fade-in-later opacity-0 flex items-center gap-4 flex-wrap">
-                                {project.sourceCode && (
-                                    <a
-                                        href={project.sourceCode}
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                        className="hover:text-primary flex items-center gap-1.5 transition-all hover:scale-105"
-                                        title={project.sourceCodeBackend ? "Frontend Source Code" : "GitHub Repository"}
-                                    >
-                                        <GithubIcon size={30} />
-                                        {project.sourceCodeBackend && (
-                                            <span className="text-xs font-semibold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 rounded px-1.5 py-0.5">
-                                                Frontend
-                                            </span>
-                                        )}
-                                    </a>
-                                )}
-                                {project.sourceCodeBackend && (
-                                    <a
-                                        href={project.sourceCodeBackend}
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                        className="hover:text-primary flex items-center gap-1.5 transition-all hover:scale-105"
-                                        title="Backend Source Code"
-                                    >
-                                        <GithubIcon size={30} />
-                                        <span className="text-xs font-semibold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 rounded px-1.5 py-0.5">
-                                            Backend
-                                        </span>
-                                    </a>
-                                )}
-                                {project.liveUrl && (
-                                    <a
-                                        href={project.liveUrl}
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                        className="hover:text-primary transition-all hover:scale-105"
-                                    >
-                                        <ExternalLink size={30} />
-                                    </a>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="space-y-7">
-                            <div className="fade-in-later">
-                                <p className="text-muted-foreground font-anton mb-3">
-                                    Technologies Used
-                                </p>
-                                <div className="text-lg">
-                                    {project.techStack.join(', ')}
-                                </div>
-                            </div>
-                            {project.liveUrl && (
-                                <div className="fade-in-later pt-2 pb-4">
-                                    <a
-                                        href={project.liveUrl}
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-anton uppercase tracking-wider border-2 border-primary bg-white text-black hover:bg-green hover:text-black hover:border-white transition-all duration-300 hover:scale-105 active:scale-95"
-                                    >
-                                        Visit Live Site
-                                        <ExternalLink size={16} />
-                                    </a>
-                                </div>
-                            )}
-                            <div className="fade-in-later">
-                                <p className="text-muted-foreground font-anton mb-3">
-                                    Description
-                                </p>
-                                <div className="text-lg prose-xl markdown-text">
-                                    {parse(project.description)}
-                                </div>
-                            </div>
-                            {project.role && (
-                                <div className="fade-in-later">
-                                    <p className="text-muted-foreground font-anton mb-3">
-                                        My Role
-                                    </p>
-                                    <div className="text-lg">
-                                        {parse(project.role)}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="lg:hidden mt-10">
-                            <ArrowAnimation />
-                        </div>
+                <div className="border-b border-[#E7E5E4] dark:border-[#292524] pb-8 mb-8">
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                        {project.type && (
+                            <span className="px-3 py-1 text-xs font-mono font-semibold rounded-full bg-[#FFEDD5] dark:bg-[#431407] text-[#C2410C] dark:text-[#FB923C] border border-[#FED7AA] dark:border-[#7C2D12]">
+                                {project.type}
+                            </span>
+                        )}
+                        <span className="px-3 py-1 text-xs font-mono rounded-full bg-[#F3F1EA] dark:bg-[#292524] text-[#57534E] dark:text-[#A8A29E] border border-[#E7E5E4] dark:border-[#3F3F46] flex items-center gap-1">
+                            <Calendar size={12} />
+                            {project.year}
+                        </span>
                     </div>
 
-                    {/* Right side: Media */}
-                    <div className="lg:w-[55%] flex flex-col gap-10 lg:gap-16 pt-4 lg:pt-0" id="media-column">
-                        {project.video && (
-                            <div className="fade-in-later w-full">
-                                <p className="text-muted-foreground font-anton mb-3 uppercase tracking-wider text-sm">
-                                    Project Demo Video
-                                </p>
-                                <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border shadow-2xl bg-black/40 group/video">
-                                    <iframe
-                                        src={project.video}
-                                        allow="autoplay; encrypted-media"
-                                        allowFullScreen
-                                        className="w-full h-full border-none rounded-lg"
-                                    />
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1C1917] dark:text-[#FAFAF9] tracking-tight mb-4">
+                        {project.title}
+                    </h1>
+
+                    <p className="text-lg text-[#57534E] dark:text-[#A8A29E] max-w-3xl leading-relaxed mb-6 font-normal">
+                        {project.summary}
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                        {project.liveUrl && (
+                            <a
+                                href={project.liveUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#C2410C] hover:bg-[#9A3412] text-white font-medium text-xs transition-colors shadow-xs"
+                            >
+                                <ExternalLink size={14} />
+                                Live Demo
+                            </a>
+                        )}
+
+                        {project.sourceCode && (
+                            <a
+                                href={project.sourceCode}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#F3F1EA] dark:bg-[#292524] hover:bg-[#E7E5E4] dark:hover:bg-[#3F3F46] text-[#1C1917] dark:text-[#FAFAF9] border border-[#E7E5E4] dark:border-[#3F3F46] font-medium text-xs transition-colors"
+                            >
+                                <GithubIcon size={14} />
+                                {project.sourceCodeBackend ? 'Frontend Repo' : 'GitHub Repository'}
+                            </a>
+                        )}
+
+                        {project.sourceCodeBackend && (
+                            <a
+                                href={project.sourceCodeBackend}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#F3F1EA] dark:bg-[#292524] hover:bg-[#E7E5E4] dark:hover:bg-[#3F3F46] text-[#1C1917] dark:text-[#FAFAF9] border border-[#E7E5E4] dark:border-[#3F3F46] font-medium text-xs transition-colors"
+                            >
+                                <GithubIcon size={14} />
+                                Backend Repo
+                            </a>
+                        )}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-8">
+                        <div>
+                            <h2 className="text-xl font-bold text-[#1C1917] dark:text-[#FAFAF9] mb-3 border-b border-[#E7E5E4] dark:border-[#292524] pb-2">
+                                Project Overview
+                            </h2>
+                            <div className="text-[#57534E] dark:text-[#A8A29E] text-sm leading-relaxed markdown-text">
+                                {parse(project.description)}
+                            </div>
+                        </div>
+
+                        {project.role && (
+                            <div className="bg-white dark:bg-[#1C1917] p-6 rounded-lg border border-[#E7E5E4] dark:border-[#292524]">
+                                <h2 className="text-lg font-bold text-[#1C1917] dark:text-[#FAFAF9] mb-3 border-b border-[#E7E5E4] dark:border-[#292524] pb-2">
+                                    Engineering Role & Responsibilities
+                                </h2>
+                                <div className="text-[#57534E] dark:text-[#A8A29E] text-sm leading-relaxed markdown-text">
+                                    {parse(project.role)}
                                 </div>
                             </div>
                         )}
 
-                        <div
-                            className="fade-in-later relative flex flex-col gap-8 w-full"
-                            id="images"
-                        >
-                            {project.images.map((image) => (
-                                <div
-                                    key={image}
-                                    className="group relative w-full aspect-[750/400] bg-background-light rounded-lg overflow-hidden"
-                                    style={{
-                                        backgroundImage: `url(${image})`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center 50%',
-                                        backgroundRepeat: 'no-repeat',
-                                    }}
-                                >
-                                    <a
-                                        href={image}
-                                        target="_blank"
-                                        className="absolute top-4 right-4 bg-background/70 text-foreground size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-primary-foreground group-hover:opacity-100 rounded-full"
-                                    >
-                                        <ExternalLink />
-                                    </a>
+                        {project.video && (
+                            <div>
+                                <h2 className="text-xl font-bold text-[#1C1917] dark:text-[#FAFAF9] mb-3">
+                                    Demonstration Video
+                                </h2>
+                                <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-[#E7E5E4] dark:border-[#292524] bg-black">
+                                    <iframe
+                                        src={project.video}
+                                        allow="autoplay; encrypted-media"
+                                        allowFullScreen
+                                        className="w-full h-full border-none"
+                                    />
                                 </div>
-                            ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="bg-white dark:bg-[#1C1917] p-6 rounded-lg border border-[#E7E5E4] dark:border-[#292524] space-y-4">
+                            <h3 className="font-bold text-[#1C1917] dark:text-[#FAFAF9] text-sm font-mono uppercase tracking-wider pb-2 border-b border-[#E7E5E4] dark:border-[#292524] flex items-center gap-2">
+                                <Code2 size={16} className="text-[#C2410C] dark:text-[#FB923C]" />
+                                <span>Technologies</span>
+                            </h3>
+
+                            <div className="flex flex-wrap gap-1.5">
+                                {project.techStack.map((tech) => (
+                                    <span
+                                        key={tech}
+                                        className="px-2.5 py-1 text-xs font-medium rounded bg-[#F3F1EA] dark:bg-[#292524] text-[#1C1917] dark:text-[#FAFAF9] border border-[#E7E5E4] dark:border-[#3F3F46]"
+                                    >
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
+
+                        {project.highlight && (
+                            <div className="bg-[#FFEDD5]/60 dark:bg-[#431407]/40 p-6 rounded-lg border border-[#FED7AA] dark:border-[#7C2D12]/40 space-y-2">
+                                <div className="text-xs font-mono font-bold text-[#C2410C] dark:text-[#FB923C] uppercase">
+                                    Key Highlight
+                                </div>
+                                <div className="text-sm font-semibold text-[#1C1917] dark:text-[#FAFAF9]">
+                                    {project.highlight}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-        </section>
+        </main>
     );
-};
-
-export default ProjectDetails;
+}
