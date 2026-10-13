@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft, Trophy } from "lucide-react";
 
-const ChessBoard = dynamic(() => import("../components/ChessBoard"), { ssr: false });
+const ChessBoard = dynamic(() => import("./ChessBoard"), { ssr: false });
 
 export default function ChessPage() {
   const [showWIP, setShowWIP] = useState(true);

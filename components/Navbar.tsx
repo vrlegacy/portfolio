@@ -1,146 +1,272 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, FileText } from 'lucide-react';
-import { GENERAL_INFO } from '@/lib/data';
 
-const NAV_LINKS = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/#about' },
-    { name: 'Skills', href: '/#skills' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Experience', href: '/experience' },
-    { name: 'Resume', href: '/resume' },
-    { name: 'Contact', href: '/contact' },
+const SECTIONS = [
+  { id: 'home', label: 'Home', icon: '#i-home' },
+  { id: 'about', label: 'About', icon: '#i-user' },
+  { id: 'skills', label: 'Skills', icon: '#i-layers' },
+  { id: 'experience', label: 'Experience', icon: '#i-briefcase' },
+  { id: 'projects', label: 'Projects', icon: '#i-folder' },
+  { id: 'resume', label: 'Resume', icon: '#i-doc' },
+  { id: 'contact', label: 'Contact', icon: '#i-mail' },
 ];
 
 export default function Navbar() {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const pathname = usePathname();
+  const pathname = usePathname();
+  const [currentSec, setCurrentSec] = useState(SECTIONS[0]);
+  const [bengaluruTime, setBengaluruTime] = useState('');
+  const [state, setState] = useState<'open' | 'compact' | 'alert'>('open');
+  const [isAlerting, setIsAlerting] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 20) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
-        };
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [scrollOpen, setScrollOpen] = useState(true);
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const islandRef = useRef<HTMLElement>(null);
+  const lensRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const lastYRef = useRef(0);
+  const alertTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-    const closeMobileMenu = () => {
-        setIsMobileMenuOpen(false);
+  // Measure text width and update pill width variable --wc
+  const fit = useCallback((textLabel: string) => {
+    if (!measureRef.current || !islandRef.current) return;
+    measureRef.current.textContent = textLabel;
+    const tw = measureRef.current.getBoundingClientRect().width;
+    const timeW = 36;
+    const w = Math.ceil(7 + 34 + 10 + (isAlerting ? 16 : 7) + 8 + tw + 10 + timeW + 8 + 6);
+    islandRef.current.style.setProperty('--wc', Math.max(150, w) + 'px');
+  }, [isAlerting]);
+
+  // Highlight lens positioning
+  const placeLens = useCallback((animate = true) => {
+    if (!navRef.current || !lensRef.current) return;
+    const activeEl = navRef.current.querySelector('[aria-current="true"]') as HTMLElement;
+    if (!activeEl) {
+      lensRef.current.style.opacity = '0';
+      return;
+    }
+    lensRef.current.style.transition = animate ? 'transform .6s var(--spring), width .6s var(--spring), opacity .25s' : 'none';
+    lensRef.current.style.transform = `translateX(${activeEl.offsetLeft}px)`;
+    lensRef.current.style.width = `${activeEl.offsetWidth}px`;
+    lensRef.current.style.opacity = '1';
+  }, []);
+
+  // Compute island open/compact state
+  useEffect(() => {
+    if (isAlerting) {
+      setState('alert');
+    } else if (hovered || focused || pinned || scrollOpen) {
+      setState('open');
+    } else {
+      setState('compact');
+    }
+  }, [isAlerting, hovered, focused, pinned, scrollOpen]);
+
+  // Update pill fit when section or alert changes
+  useEffect(() => {
+    fit(isAlerting ? alertMsg : currentSec.label);
+    placeLens(true);
+  }, [currentSec, isAlerting, alertMsg, fit, placeLens]);
+
+  // Bengaluru time calculation
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const formatted = new Intl.DateTimeFormat('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: 'Asia/Kolkata',
+        }).format(new Date());
+        setBengaluruTime(formatted);
+      } catch {
+        setBengaluruTime('');
+      }
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 20000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Listen for scroll to handle collapsible pill behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY || 0;
+      const d = y - lastYRef.current;
+      if (y < 48) {
+        setScrollOpen(true);
+      } else if (d < -6) {
+        setScrollOpen(true);
+      } else if (d > 6) {
+        setScrollOpen(false);
+        setPinned(false);
+      }
+      lastYRef.current = y;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // IntersectionObserver for main page sections
+  useEffect(() => {
+    if (pathname !== '/' && pathname !== '/home') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const matched = SECTIONS.find((s) => s.id === entry.target.id);
+            if (matched) setCurrentSec(matched);
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+
+    SECTIONS.forEach((sec) => {
+      const el = document.getElementById(sec.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  // Global event listener for custom dynamic island notifications (e.g. email copy)
+  useEffect(() => {
+    const handleNotify = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      const msg = customEvent.detail || 'Copied';
+      setAlertMsg(msg);
+      setIsAlerting(true);
+      if (alertTimerRef.current) clearTimeout(alertTimerRef.current);
+      alertTimerRef.current = setTimeout(() => {
+        setIsAlerting(false);
+      }, 2400);
     };
 
-    return (
-        <header
-            className={`sticky top-0 z-50 transition-all duration-200 border-b ${
-                isScrolled
-                    ? 'bg-[#FAFAF7]/90 dark:bg-[#0C0A09]/90 backdrop-blur-md border-[#E7E5E4] dark:border-[#292524] shadow-sm py-3'
-                    : 'bg-[#FAFAF7] dark:bg-[#0C0A09] border-[#E7E5E4] dark:border-[#292524] py-4'
-            }`}
+    window.addEventListener('island-notify', handleNotify);
+    return () => {
+      window.removeEventListener('island-notify', handleNotify);
+      if (alertTimerRef.current) clearTimeout(alertTimerRef.current);
+    };
+  }, []);
+
+  // Handle glass spotlight hover movement
+  useEffect(() => {
+    const handlePointerMove = (e: PointerEvent) => {
+      const target = e.target as HTMLElement;
+      const g = target?.closest ? (target.closest('.btn-glass, .btn-primary, .island') as HTMLElement) : null;
+      if (!g) return;
+      const r = g.getBoundingClientRect();
+      g.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      g.style.setProperty('--my', `${e.clientY - r.top}px`);
+    };
+    document.addEventListener('pointermove', handlePointerMove, { passive: true });
+    return () => document.removeEventListener('pointermove', handlePointerMove);
+  }, []);
+
+  const toggleOpen = () => {
+    if (state === 'open') {
+      setPinned(false);
+      setHovered(false);
+      setFocused(false);
+      setScrollOpen((window.scrollY || 0) < 48);
+    } else {
+      setPinned(true);
+    }
+  };
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sec: typeof SECTIONS[0]) => {
+    e.preventDefault();
+    setCurrentSec(sec);
+    if (pathname === '/' || pathname === '/home') {
+      const el = document.getElementById(sec.id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', `#${sec.id}`);
+      }
+    } else {
+      window.location.href = `/#${sec.id}`;
+    }
+  };
+
+  return (
+    <header
+      ref={islandRef}
+      className="island"
+      id="island"
+      data-state={state}
+      data-alert={isAlerting ? 'true' : 'false'}
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'mouse') setHovered(true);
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === 'mouse') setHovered(false);
+      }}
+      onFocus={() => setFocused(true)}
+      onBlur={(e) => {
+        if (!islandRef.current?.contains(e.relatedTarget as Node)) {
+          setFocused(false);
+        }
+      }}
+    >
+      <div className="isl-row">
+        <button
+          className="isl-toggle"
+          id="islandBtn"
+          type="button"
+          aria-expanded={state === 'open'}
+          aria-label="Toggle navigation"
+          onClick={toggleOpen}
         >
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-                {/* Brand / Logo */}
-                <Link
-                    href="/"
-                    className="flex items-center gap-2 font-bold text-lg text-[#1C1917] dark:text-[#FAFAF9] group"
-                    onClick={closeMobileMenu}
-                >
-                    <span className="w-8 h-8 rounded-lg bg-[#C2410C] text-white flex items-center justify-center font-mono text-sm font-extrabold group-hover:bg-[#9A3412] transition-colors shadow-xs">
-                        VR
-                    </span>
-                    <span className="tracking-tight">
-                        Vishwas <span className="text-[#C2410C] dark:text-[#FB923C] font-semibold">Rudramurthy</span>
-                    </span>
-                </Link>
+          <span className="isl-avatar" aria-hidden="true">
+            VR
+          </span>
+          <span className="isl-label">
+            <i className="isl-dot" id="islandDot"></i>
+            <svg className="ic isl-check" aria-hidden="true">
+              <use href="#i-check" />
+            </svg>
+            <span className="isl-text" id="islandText">
+              <span className="t">{isAlerting ? alertMsg : currentSec.label}</span>
+            </span>
+          </span>
+        </button>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
-                    {NAV_LINKS.map((link) => {
-                        const isActive = pathname === link.href;
-                        return (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className={`px-3 py-1.5 rounded-md transition-colors ${
-                                    isActive
-                                        ? 'bg-[#F3F1EA] dark:bg-[#292524] text-[#C2410C] dark:text-[#FB923C] font-semibold'
-                                        : 'text-[#57534E] dark:text-[#A8A29E] hover:text-[#C2410C] dark:hover:text-[#FB923C] hover:bg-[#F3F1EA]/60 dark:hover:bg-[#1C1917]'
-                                }`}
-                            >
-                                {link.name}
-                            </Link>
-                        );
-                    })}
-                </nav>
+        <nav ref={navRef} className="isl-nav" aria-label="Sections">
+          <i ref={lensRef} className="isl-lens" id="islandLens" aria-hidden="true"></i>
+          {SECTIONS.map((sec) => {
+            const isActive = currentSec.id === sec.id;
+            return (
+              <a
+                key={sec.id}
+                className="isl-item"
+                data-sec={sec.id}
+                href={`#${sec.id}`}
+                title={sec.label}
+                aria-current={isActive ? 'true' : undefined}
+                onClick={(e) => handleNavClick(e, sec)}
+              >
+                <svg className="ic" aria-hidden="true">
+                  <use href={sec.icon} />
+                </svg>
+                <span className="lbl">{sec.label}</span>
+              </a>
+            );
+          })}
+        </nav>
 
-                {/* Resume Download CTA (Desktop) */}
-                <div className="hidden md:flex items-center gap-3">
-                    <a
-                        href={GENERAL_INFO.resumePdf}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-md bg-[#C2410C] hover:bg-[#9A3412] text-white transition-colors shadow-xs"
-                    >
-                        <FileText size={14} />
-                        Resume PDF
-                    </a>
-                </div>
-
-                {/* Mobile Hamburger Button */}
-                <button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="md:hidden p-2 rounded-md text-[#1C1917] dark:text-[#FAFAF9] hover:bg-[#F3F1EA] dark:hover:bg-[#292524] transition-colors"
-                    aria-label="Toggle navigation menu"
-                >
-                    {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-                </button>
-            </div>
-
-            {/* Mobile Slide-down Menu */}
-            {isMobileMenuOpen && (
-                <div className="md:hidden border-b border-[#E7E5E4] dark:border-[#292524] bg-[#FAFAF7] dark:bg-[#0C0A09] px-4 pt-2 pb-6 space-y-2 animate-in slide-in-from-top duration-200">
-                    <div className="flex flex-col space-y-1">
-                        {NAV_LINKS.map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Link
-                                    key={link.name}
-                                    href={link.href}
-                                    onClick={closeMobileMenu}
-                                    className={`px-3 py-2.5 rounded-md text-base font-medium transition-colors ${
-                                        isActive
-                                            ? 'bg-[#FFEDD5] dark:bg-[#431407] text-[#C2410C] dark:text-[#FB923C] font-semibold'
-                                            : 'text-[#57534E] dark:text-[#A8A29E] hover:bg-[#F3F1EA] dark:hover:bg-[#1C1917]'
-                                    }`}
-                                >
-                                    {link.name}
-                                </Link>
-                            );
-                        })}
-                    </div>
-
-                    <div className="pt-3 border-t border-[#E7E5E4] dark:border-[#292524]">
-                        <a
-                            href={GENERAL_INFO.resumePdf}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={closeMobileMenu}
-                            className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold rounded-md bg-[#C2410C] text-white hover:bg-[#9A3412] transition-colors"
-                        >
-                            <FileText size={16} />
-                            Download Resume PDF
-                        </a>
-                    </div>
-                </div>
-            )}
-        </header>
-    );
+        <span className="isl-time" id="islandTime" title="Time in Bengaluru">
+          {bengaluruTime || '--:--'}
+        </span>
+        <span ref={measureRef} className="isl-measure" id="islandMeasure" aria-hidden="true"></span>
+      </div>
+    </header>
+  );
 }

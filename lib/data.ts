@@ -20,16 +20,24 @@ export const SOCIAL_LINKS = [
 ];
 
 export const STATS = [
-    { label: 'Years Experience', value: '1+' },
-    { label: 'Projects Built', value: '7+' },
+    { label: 'Years Experience', value: '1' },
+    { label: 'Projects Built', value: '10+' },
     { label: 'AI Workflows', value: '15+' },
     { label: 'GitHub Repos', value: '25+' },
 ];
 
 export const SKILL_CATEGORIES = [
     {
+        title: 'Languages',
+        skills: ['Python','Javascript', 'SQL', 'HTML5','CSS3']
+    },
+    {
         title: 'Backend & APIs',
-        skills: ['Python', 'FastAPI', 'Node.js', 'Express.js', 'REST APIs', 'JWT Auth', 'PostgreSQL', 'MongoDB']
+        skills: ['FastAPI', 'REST APIs',  'OAuth2/JWT Auth', 'RBAC', 'SQLAlchemy']
+    },
+    {
+        title: 'Databases',
+        skills: ['PostgreSQL', 'MongoDB Atlas', 'SQLite', 'Supabase']
     },
     {
         title: 'AI & Automation',
@@ -37,11 +45,11 @@ export const SKILL_CATEGORIES = [
     },
     {
         title: 'Frontend & UI',
-        skills: ['React.js', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Radix UI', 'Redux', 'HTML5/CSS3']
+        skills: ['React.js', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Radix UI', 'Redux', 'Vite']
     },
     {
         title: 'Cloud & Tools',
-        skills: ['Git & GitHub', 'Docker', 'Supabase', 'AWS', 'Cloudinary', 'Postman', 'Linux', 'Vite']
+        skills: ['Git & GitHub', 'Docker', 'Supabase', 'AWS', 'Cloudinary', 'Postman', 'Linux']
     }
 ];
 
@@ -71,8 +79,8 @@ export const PROJECTS: IProject[] = [
       `,
         techStack: ['FastAPI', 'React', 'LiveKit', 'Sarvam AI', 'n8n', 'Supabase', 'Python'],
         thumbnail: '/projects/thumbnail/finocr.png',
-        liveUrl: 'https://talentpulse-ai.example.com',
-        sourceCode: 'https://github.com/vrlegacy/talentpulse-ai',
+        liveUrl: 'https://talent-pulse-ai.pages.dev',
+        sourceCode: 'https://github.com/vrlegacy/talentpulseAI',
     },
     {
         title: 'TriGo Trip Planner',
@@ -185,7 +193,7 @@ export const PROJECTS: IProject[] = [
       `,
         techStack: ['n8n', 'Python', 'FastAPI', 'Tesseract OCR', 'Gemini API', 'Supabase'],
         thumbnail: '/projects/thumbnail/trigo.png',
-        liveUrl: 'https://readiness-workflow.example.com',
+        liveUrl: 'https://talent-flow-ai.slicearrow.com',
         sourceCode: 'https://github.com/vrlegacy/candidate-readiness-workflow',
     },
     {
@@ -249,7 +257,7 @@ export const PROJECTS: IProject[] = [
 export const MY_EXPERIENCE: IExperience[] = [
     {
         id: 'exp-1',
-        title: 'Full Stack Developer Intern',
+        title: 'Full Stack Developer',
         company: 'Sirpi Products and Services Pvt. Ltd.',
         location: 'Bengaluru, India (On-site)',
         duration: 'Apr 2026 - Present',
