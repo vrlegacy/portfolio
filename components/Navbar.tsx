@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import NavCat from '@/components/NavCat';
 
 const SECTIONS = [
   { id: 'home', label: 'Home', icon: '#i-home' },
@@ -17,7 +18,6 @@ const SECTIONS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [currentSec, setCurrentSec] = useState(SECTIONS[0]);
-  const [bengaluruTime, setBengaluruTime] = useState('');
   const [state, setState] = useState<'open' | 'compact' | 'alert'>('open');
   const [isAlerting, setIsAlerting] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
@@ -29,7 +29,6 @@ export default function Navbar() {
 
   const measureRef = useRef<HTMLSpanElement>(null);
   const islandRef = useRef<HTMLElement>(null);
-  const lensRef = useRef<HTMLElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const lastYRef = useRef(0);
   const alertTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -39,24 +38,10 @@ export default function Navbar() {
     if (!measureRef.current || !islandRef.current) return;
     measureRef.current.textContent = textLabel;
     const tw = measureRef.current.getBoundingClientRect().width;
-    const timeW = 36;
-    const w = Math.ceil(7 + 34 + 10 + (isAlerting ? 16 : 7) + 8 + tw + 10 + timeW + 8 + 6);
-    islandRef.current.style.setProperty('--wc', Math.max(150, w) + 'px');
+    const catW = 36;
+    const w = Math.ceil(7 + 34 + 10 + (isAlerting ? 16 : 7) + 8 + tw + 10 + catW + 8 + 6);
+    islandRef.current.style.setProperty('--wc', Math.max(140, w) + 'px');
   }, [isAlerting]);
-
-  // Highlight lens positioning
-  const placeLens = useCallback((animate = true) => {
-    if (!navRef.current || !lensRef.current) return;
-    const activeEl = navRef.current.querySelector('[aria-current="true"]') as HTMLElement;
-    if (!activeEl) {
-      lensRef.current.style.opacity = '0';
-      return;
-    }
-    lensRef.current.style.transition = animate ? 'transform .6s var(--spring), width .6s var(--spring), opacity .25s' : 'none';
-    lensRef.current.style.transform = `translateX(${activeEl.offsetLeft}px)`;
-    lensRef.current.style.width = `${activeEl.offsetWidth}px`;
-    lensRef.current.style.opacity = '1';
-  }, []);
 
   // Compute island open/compact state
   useEffect(() => {
@@ -72,28 +57,7 @@ export default function Navbar() {
   // Update pill fit when section or alert changes
   useEffect(() => {
     fit(isAlerting ? alertMsg : currentSec.label);
-    placeLens(true);
-  }, [currentSec, isAlerting, alertMsg, fit, placeLens]);
-
-  // Bengaluru time calculation
-  useEffect(() => {
-    const updateTime = () => {
-      try {
-        const formatted = new Intl.DateTimeFormat('en-GB', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-          timeZone: 'Asia/Kolkata',
-        }).format(new Date());
-        setBengaluruTime(formatted);
-      } catch {
-        setBengaluruTime('');
-      }
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 20000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [currentSec, isAlerting, alertMsg, fit]);
 
   // Listen for scroll to handle collapsible pill behavior
   useEffect(() => {
@@ -240,7 +204,6 @@ export default function Navbar() {
         </button>
 
         <nav ref={navRef} className="isl-nav" aria-label="Sections">
-          <i ref={lensRef} className="isl-lens" id="islandLens" aria-hidden="true"></i>
           {SECTIONS.map((sec) => {
             const isActive = currentSec.id === sec.id;
             return (
@@ -262,10 +225,8 @@ export default function Navbar() {
           })}
         </nav>
 
-        <span className="isl-time" id="islandTime" title="Time in Bengaluru">
-          {bengaluruTime || '--:--'}
-        </span>
         <span ref={measureRef} className="isl-measure" id="islandMeasure" aria-hidden="true"></span>
+        <NavCat islandRef={islandRef} />
       </div>
     </header>
   );

@@ -24,9 +24,10 @@
   --glass-line: rgba(0, 0, 0, .1);
   --spec: rgba(255, 255, 255, .95);
   --shadow: rgba(0, 0, 0, .18);
-  --blob: rgba(0, 0, 0, .085);
   --prim: rgba(17, 17, 17, .86);
   --prim-fg: #FFFFFF;
+  --ledge: #cdb9f5;
+  --z-color: #7c3aed;
   color-scheme: light;
 }
 
@@ -48,6 +49,8 @@
     --blob: rgba(255, 255, 255, .1);
     --prim: rgba(245, 245, 247, .9);
     --prim-fg: #000000;
+    --ledge: #cdb9f5;
+    --z-color: #c4b5fd;
     color-scheme: dark;
   }
 }
@@ -69,6 +72,8 @@
   --blob: rgba(255, 255, 255, .1);
   --prim: rgba(245, 245, 247, .9);
   --prim-fg: #000000;
+  --ledge: #cdb9f5;
+  --z-color: #c4b5fd;
   color-scheme: dark;
 }
 
@@ -268,6 +273,7 @@ h1, h2, h3 {
 }
 
 .isl-row {
+  position: relative;
   display: flex;
   align-items: center;
   height: 52px;
@@ -458,7 +464,7 @@ h1, h2, h3 {
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
-  transition: background .2s, color .2s, transform .35s var(--spring);
+  transition: color .2s, transform .35s var(--spring);
 }
 
 .isl-item .ic {
@@ -476,7 +482,6 @@ h1, h2, h3 {
 }
 
 .isl-item:hover {
-  background: var(--fill);
   color: var(--fg);
 }
 
@@ -486,21 +491,6 @@ h1, h2, h3 {
 
 .isl-item[aria-current="true"] {
   color: var(--fg);
-}
-
-.isl-lens {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  height: 44px;
-  margin-top: -22px;
-  width: 0;
-  border-radius: 999px;
-  background: var(--fill-strong);
-  box-shadow: inset 0 1px 0 var(--glass-hi);
-  pointer-events: none;
-  opacity: 0;
-  transition: transform .6s var(--spring), width .6s var(--spring), opacity .25s;
 }
 
 @media (min-width: 900px) {
@@ -526,24 +516,6 @@ h1, h2, h3 {
   .island[data-state="open"] .isl-toggle {
     display: none;
   }
-}
-
-.isl-time {
-  flex: none;
-  max-width: 60px;
-  margin-left: 10px;
-  overflow: hidden;
-  font-family: var(--mono);
-  font-size: .75rem;
-  color: var(--fg2);
-  font-variant-numeric: tabular-nums;
-  transition: max-width .5s var(--ease), margin-left .5s var(--ease), opacity .25s;
-}
-
-.island[data-state="open"] .isl-time {
-  max-width: 0;
-  margin-left: 0;
-  opacity: 0;
 }
 
 /* Buttons */
@@ -1031,6 +1003,267 @@ h1 {
     color: #111111 !important;
   }
 }
+
+/* ==========================================================================
+   Dynamic Island Tuxedo Cat Slot & Animations
+   ========================================================================== */
+
+.cat-slot {
+  position: relative;
+  width: 36px;
+  height: 22px;
+  flex: none;
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cat-slot::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 17px;
+  width: 30px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ledge);
+  opacity: 0.75;
+}
+
+.cat-prowler {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 36px;
+  height: 22px;
+  pointer-events: auto;
+  z-index: 10;
+  will-change: transform;
+}
+
+.cat-slot .nav-cat-anchor,
+.cat-prowler .nav-cat-anchor {
+  --cat-w: 36px;
+  left: 0;
+  top: 0;
+}
+
+.nav-cat-anchor {
+  position: absolute;
+  width: var(--cat-w, 36px);
+  aspect-ratio: 72 / 44;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.3s;
+}
+
+.nav-cat-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cat-lie,
+.cat-stand,
+.lie-loaf,
+.stand-tail,
+.cat-torso,
+.cat-bob,
+.cat-eyes-open,
+.leg {
+  transform-box: view-box;
+}
+
+.cat-lie,
+.cat-stand {
+  transform-origin: 36px 34px;
+  transition: opacity 0.28s, transform 0.28s;
+}
+
+.cat-lie {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.cat-stand {
+  opacity: 1;
+}
+
+.is-sleeping .cat-lie {
+  opacity: 1;
+  transform: none;
+}
+
+.is-sleeping .cat-stand {
+  opacity: 0;
+  transform: scale(1.03);
+}
+
+.is-standing .cat-lie {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.is-standing .cat-stand {
+  opacity: 1;
+  transform: none;
+}
+
+.lie-loaf {
+  transform-origin: 38px 34px;
+}
+
+.is-sleeping .lie-loaf {
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+.z {
+  opacity: 0;
+  font-family: var(--font), system-ui, sans-serif;
+  font-weight: 900;
+  fill: var(--z-color, #7c3aed);
+  pointer-events: none;
+  user-select: none;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.is-sleeping .z1 {
+  animation: floatz 3.6s ease-in-out infinite;
+}
+
+.is-sleeping .z2 {
+  animation: floatz 3.6s ease-in-out infinite;
+  animation-delay: -1.2s;
+}
+
+.is-sleeping .z3 {
+  animation: floatz 3.6s ease-in-out infinite;
+  animation-delay: -2.4s;
+}
+
+.cat-eyes-open {
+  transform-origin: 19px 15.5px;
+  animation: blink 5s infinite;
+}
+
+.stand-tail {
+  transform-origin: 57px 21px;
+}
+
+.cat-torso {
+  transform-origin: 40px 21px;
+}
+
+.is-walking .stand-tail {
+  animation: wag calc(var(--cat-walk-speed, 0.4s) * 3) ease-in-out infinite;
+}
+
+.is-running .stand-tail {
+  transform: rotate(18deg);
+}
+
+.is-running .cat-torso {
+  transform: scaleX(1.06);
+}
+
+.is-walking .cat-bob {
+  animation: bob calc(var(--cat-walk-speed, 0.4s) / 2) ease-in-out infinite;
+}
+
+.is-running .cat-bob {
+  animation: bobRun var(--cat-walk-speed, 0.17s) ease-in-out infinite;
+}
+
+.is-walking .leg-a {
+  animation: swingA var(--cat-walk-speed, 0.4s) ease-in-out infinite;
+}
+
+.is-walking .leg-b {
+  animation: swingB var(--cat-walk-speed, 0.4s) ease-in-out infinite;
+}
+
+.is-running .leg-a {
+  animation: runA var(--cat-walk-speed, 0.17s) ease-in-out infinite;
+}
+
+.is-running .leg-b {
+  animation: runB var(--cat-walk-speed, 0.17s) ease-in-out infinite;
+}
+
+@keyframes swingA {
+  0%, 100% { transform: rotate(-22deg); }
+  50% { transform: rotate(22deg); }
+}
+
+@keyframes swingB {
+  0%, 100% { transform: rotate(22deg); }
+  50% { transform: rotate(-22deg); }
+}
+
+@keyframes runA {
+  0%, 100% { transform: rotate(-42deg); }
+  50% { transform: rotate(42deg); }
+}
+
+@keyframes runB {
+  0%, 100% { transform: rotate(42deg); }
+  50% { transform: rotate(-42deg); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.7px); }
+}
+
+@keyframes bobRun {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.8px); }
+}
+
+@keyframes wag {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(7deg); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.035); }
+}
+
+@keyframes blink {
+  0%, 93%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+@keyframes floatz {
+  0% {
+    opacity: 0;
+    transform: translate(0, 4px) scale(0.7);
+  }
+  20% {
+    opacity: 0.95;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(8px, -18px) scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-cat-anchor *,
+  .cat-slot * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 
 
 
